@@ -27,13 +27,19 @@
       :form-model="formModel"
       @reload="handleReloadTable"
     />
-    <el-dialog :visible.sync="addDialogVisible" title="添加" width="60%">
+    <el-dialog :visible.sync="addDialogVisible" append-to-body title="添加" width="60%">
       <biz-project-form v-if="formConfig.formKey" :key="formParseKey" :form-config="formConfig" @submit="submitForm" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false"> 取 消 </el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="queryDialogVisible" class="t-dialog t-dialog--top" title="查询" width="50%">
+    <el-dialog
+      :visible.sync="queryDialogVisible"
+      append-to-body
+      class="t-dialog t-dialog--top"
+      title="查询"
+      width="50%"
+    >
       <data-filter
         :fields="fields"
         @filter="
@@ -294,7 +300,7 @@ export default {
     initPerms() {
       // 管理模式
       if (this.mode === 1) {
-        ;['export', 'print', 'custom'].forEach((key) => {
+        ['export', 'print', 'custom'].forEach((key) => {
           this.gridOptions.toolbarConfig[key] = true
         })
         return true
@@ -490,6 +496,19 @@ export default {
 <style lang="scss" scoped>
 .app-container {
   width: 100%;
+  height: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  background-color: transparent;
+
+  > div {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    height: 100%;
+    box-sizing: border-box;
+  }
 }
 
 ::v-deep .project-form {

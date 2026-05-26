@@ -69,6 +69,9 @@
           </el-form-item>
           <el-form-item>
             <el-button class="width-full" type="primary" @click="emailRegHandle">确定</el-button>
+            <div class="form-footer-links">
+              <span class="link-item" @click="$emit('back')">已有账号？立即登录</span>
+            </div>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -217,5 +220,23 @@ export default {
 }
 .code-input {
   width: 180px;
+}
+.form-footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px;
+  font-size: 13px;
+
+  .link-item {
+    color: #646a73;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #3370ff;
+    }
+  }
 }
 </style>

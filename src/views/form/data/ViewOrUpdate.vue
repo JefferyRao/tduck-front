@@ -3,8 +3,10 @@
     :class="fullscreen ? 't-dialog--fullscreen' : 't-dialog'"
     :fullscreen="fullscreen"
     :visible.sync="dialogVisible"
+    :show-close="false"
     custom-class="view-dialog"
     width="65%"
+    append-to-body
   >
     <div slot="title" class="t__dialog__header">
       <span class="el-dialog__title">{{ dialogTitle }}</span>
@@ -14,6 +16,7 @@
           class="el-dialog__close"
           @click="handleFullScreen"
         />
+        <i class="el-icon-close el-dialog__close" @click="handleCancel" />
       </div>
     </div>
 
@@ -227,7 +230,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dialog-form {
   overflow: hidden;
   height: 563px;

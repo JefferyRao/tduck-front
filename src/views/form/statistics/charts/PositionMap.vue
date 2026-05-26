@@ -41,12 +41,20 @@ export default {
     this.getMap()
   },
   methods: {
-    // 项目提交地址
     getProjectSubmitPosition() {
       getFormPositionRequest({ formKey: this.formKey }).then((res) => {
-        this.option.series[0].data = Object.keys(res.data).map((key) => {
+        const dataArr = Object.keys(res.data).map((key) => {
           return { name: key.replace(/省(s?)|市(s?)|\//gi, ''), value: res.data[key] }
         })
+        this.option.series[0].data = dataArr
+
+        // 动态设置最大值以适应颜色映射
+        const values = Object.values(res.data)
+        if (values.length > 0) {
+          this.option.visualMap.max = Math.max(...values) || 100
+        } else {
+          this.option.visualMap.max = 100
+        }
       })
     },
     async getMap() {
@@ -60,14 +68,37 @@ export default {
           text: '',
           subtext: ''
         },
-        tooltip: {
-          trigger: 'item'
+        legend: {
+          show: true,
+          top: 0,
+          right: 40,
+          textStyle: { color: '#666' }
         },
-        dataRange: {
+        toolbox: {
+          show: true,
+          top: -5,
+          right: 0,
+          feature: {
+            saveAsImage: { show: true, title: '保存为图片' }
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          backgroundColor: '#fff',
+          padding: [10, 15],
+          textStyle: { color: '#333' },
+          extraCssText: 'box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);'
+        },
+        visualMap: {
           min: 0,
           max: 55000,
           text: ['高', '低'],
-          splitNumber: 0
+          realtime: false,
+          calculable: true,
+          inRange: {
+            color: ['#e6f7ff', '#1890ff', '#0050b3']
+          },
+          textStyle: { color: '#666' }
         },
         series: [
           {
@@ -76,9 +107,28 @@ export default {
             roam: false,
             map: 'china',
             selectedMode: 'multiple',
+            itemStyle: {
+              borderColor: '#fff',
+              borderWidth: 1,
+              areaColor: '#f5f5f5'
+            },
+            label: {
+              show: true,
+              color: '#666',
+              fontSize: 10,
+              formatter: function (params) {
+                if (params.value) {
+                  return params.name + '\n' + params.value
+                }
+                return params.name
+              }
+            },
             emphasis: {
-              label: {
-                show: true
+              label: { show: true, color: '#333' },
+              itemStyle: {
+                areaColor: '#bae7ff',
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 0, 0, 0.2)'
               }
             },
             data: []

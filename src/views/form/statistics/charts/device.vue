@@ -30,8 +30,28 @@ export default {
         renderer: 'svg'
       },
       option: {
+        color: ['#1890FF', '#2FC25B', '#FACC14', '#223273', '#8543E0', '#13C2C2'],
+        legend: {
+          show: true,
+          top: 0,
+          right: 40,
+          textStyle: { color: '#666' }
+        },
+        toolbox: {
+          show: true,
+          top: -5,
+          right: 0,
+          feature: {
+            saveAsImage: { show: true, title: '保存为图片' }
+          }
+        },
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          backgroundColor: '#fff',
+          padding: [10, 15],
+          textStyle: { color: '#333' },
+          extraCssText: 'box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
         },
         series: [
           {
@@ -39,13 +59,20 @@ export default {
             type: 'pie',
             radius: ['50%', '70%'],
             itemStyle: {
-              borderRadius: 10,
+              borderRadius: 6,
               borderColor: '#fff',
               borderWidth: 2
             },
+            label: {
+              show: true,
+              color: '#666',
+              formatter: '{b}\n{c} ({d}%)'
+            },
             emphasis: {
-              label: {
-                show: true
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
               }
             },
             data: []

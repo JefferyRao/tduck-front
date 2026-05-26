@@ -40,7 +40,7 @@
         </el-row>
       </el-scrollbar>
     </div>
-    <pre-view :key="projectFormKey" :form-key="formKey" />
+    <pre-view :key="projectFormKey" :form-key="formKey" :show-close="false" />
     <div class="right-container">
       <p class="right-title">外观设置</p>
       <el-row align="middle" class="option-line-view" type="flex">
@@ -51,7 +51,7 @@
           <el-switch v-model="showSettings.logoSetting" @change="cleanFormSave('logoImg')" />
         </el-col>
       </el-row>
-      <el-row v-if="showSettings.logoSetting" align="middle" type="flex">
+      <el-row v-if="showSettings.logoSetting" align="middle" class="sub-option-line" type="flex">
         <el-col :span="6">
           <span class="option-line-sub-title">logo设置</span>
         </el-col>
@@ -71,7 +71,7 @@
           </el-upload>
         </el-col>
       </el-row>
-      <el-row v-if="showSettings.logoSetting" align="middle" type="flex">
+      <el-row v-if="showSettings.logoSetting" align="middle" class="sub-option-line" type="flex">
         <el-col :span="6">
           <span class="option-line-sub-title">logo位置</span>
         </el-col>
@@ -91,7 +91,7 @@
           <el-switch v-model="showSettings.headImgSetting" @change="() => cleanFormSave('headImgUrl')" />
         </el-col>
       </el-row>
-      <el-row v-if="showSettings.headImgSetting" align="middle" type="flex">
+      <el-row v-if="showSettings.headImgSetting" align="middle" class="sub-option-line" type="flex">
         <el-col :span="6">
           <span class="option-line-sub-title">上传图片</span>
         </el-col>
@@ -121,11 +121,11 @@
         </el-col>
       </el-row>
       <el-row v-if="showSettings.backgroundSetting">
-        <el-row align="middle" type="flex">
+        <el-row align="middle" class="sub-option-line" type="flex">
           <el-col :span="8">
             <span class="option-line-sub-title">背景类型</span>
           </el-col>
-          <el-col :spvan="18">
+          <el-col :span="16">
             <el-radio-group
               v-model="showSettings.backgroundType"
               size="mini"
@@ -143,21 +143,21 @@
         </el-row>
       </el-row>
       <el-row v-if="showSettings.backgroundSetting && showSettings.backgroundType == 'color'">
-        <el-row align="middle" type="flex">
+        <el-row align="middle" class="sub-option-line" type="flex">
           <el-col :span="8">
             <span class="option-line-sub-title">选择颜色</span>
           </el-col>
-          <el-col :spvan="18">
+          <el-col :span="16">
             <el-color-picker v-model="userFormTheme.backgroundColor" size="mini" @change="saveUserTheme" />
           </el-col>
         </el-row>
       </el-row>
       <el-row v-if="showSettings.backgroundType == 'img'">
-        <el-row align="middle" type="flex">
+        <el-row align="middle" class="sub-option-line" type="flex">
           <el-col :span="8">
             <span class="option-line-sub-title">选择图片</span>
           </el-col>
-          <el-col :spvan="18">
+          <el-col :span="16">
             <el-upload
               ref="upload"
               :action="getUploadUrl"
@@ -181,19 +181,19 @@
         </el-col>
       </el-row>
       <el-row v-if="showSettings.btnSetting">
-        <el-row align="middle" type="flex">
+        <el-row align="middle" class="sub-option-line" type="flex">
           <el-col :span="12">
             <span class="option-line-sub-title">显示提交按钮</span>
           </el-col>
-          <el-col :spvan="10">
+          <el-col :span="10">
             <el-switch v-model="userFormTheme.showSubmitBtn" @change="saveUserTheme" />
           </el-col>
         </el-row>
-        <el-row align="middle" type="flex">
+        <el-row align="middle" class="sub-option-line" type="flex">
           <el-col :span="12">
             <span class="option-line-sub-title">按钮提示文字</span>
           </el-col>
-          <el-col :spvan="10">
+          <el-col :span="10">
             <el-input
               v-model="userFormTheme.submitBtnText"
               placeholder="请输入内容"
@@ -396,27 +396,29 @@ export default {
 <style scoped>
 .theme-container {
   width: 100%;
-  background-color: #f7f7f7;
+  height: 100%;
+  background-color: transparent;
   overflow: hidden;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   box-sizing: border-box;
-  justify-content: center;
 }
 
 .left-container {
   line-height: 20px;
   text-align: center;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 100);
-  background-color: white;
-  width: 20%;
-  height: calc(100vh - 60px);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.03);
+  border-right: 1px solid rgba(0, 0, 0, 0.04);
+  background-color: #ffffff;
+  width: 280px;
+  height: 100%;
+  z-index: 2;
 }
 
 .left-scrollbar-container {
   height: 100%;
-  margin: 10px;
+  padding: 16px;
 }
 
 ::v-deep .el-scrollbar__wrap {
@@ -425,128 +427,152 @@ export default {
 
 .style-btn {
   line-height: 23px;
-  border-radius: 4px;
-  padding: 3px;
-  color: #707070;
-  font-size: 14px;
-  height: 30px;
+  border-radius: 6px;
+  padding: 4px;
+  color: #4b5563;
+  font-size: 13px;
+  height: 32px;
   text-align: center;
-  border: 1px solid #eaeaea;
+  border: 1px solid transparent;
+  background-color: #f3f4f6;
   display: inline-block;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
 }
 
-::v-deep .preview-container {
-  width: 70%;
-  height: 100% !important;
-}
-
-.theme-title {
-  color: rgba(16, 16, 16, 100);
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-}
-
-.theme-prompt-text {
-  color: rgba(16, 16, 16, 100);
-  font-size: 16px;
-  line-height: 30px;
-  text-align: left;
-}
-
-.color-btn {
-  width: 40px;
-  height: 22px;
-  line-height: 20px;
-  border-radius: 4px;
-  background-color: rgba(11, 141, 213, 100);
-  color: rgba(16, 16, 16, 100);
-  font-size: 14px;
-  text-align: center;
-  margin: 3px;
-  border: 1px solid rgba(255, 255, 255, 100);
-}
-
-.color-btn:hover,
 .style-btn:hover {
   cursor: pointer;
-  border: 1px solid rgba(11, 141, 213, 100);
+  background-color: #e5e7eb;
+  color: #111827;
 }
 
 .style-btn-active {
-  border: 1px solid rgba(11, 141, 213, 100);
+  background-color: #eff4ff;
+  color: #3370ff;
+  font-weight: 500;
+}
+
+::v-deep .preview-container {
+  flex: 1;
+  height: 100% !important;
+  background-color: transparent;
+}
+
+.theme-title {
+  color: #1f2937;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 16px;
 }
 
 .head-list-img {
   border: 2px solid transparent;
+  border-radius: 8px;
   height: 100%;
+  transition: all 0.25s ease;
 }
 
 .head-list-img:hover {
   cursor: pointer;
-  border: 2px solid rgba(11, 141, 213, 100);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .head-list-img-active {
-  border: 2px solid rgba(11, 141, 213, 100);
+  border: 2px solid #3370ff;
+  box-shadow: 0 4px 12px rgba(51, 112, 255, 0.2);
+}
+
+.theme-img-view {
+  margin-bottom: 12px;
+}
+
+.theme-img-view .head-list-view-select {
+  position: relative;
 }
 
 .theme-img-view .head-list-view-select ::after {
   content: '';
-  background: url('~@/assets/images/mobile_theme_active.png');
-  background-size: 18px;
-  width: 18px;
-  height: 18px;
+  background: url('~@/assets/images/mobile_theme_active.png') no-repeat center;
+  background-size: contain;
+  width: 16px;
+  height: 16px;
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 6px;
+  right: 6px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .right-container {
-  width: 310px;
-  height: calc(100vh - 60px);
+  width: 360px;
+  height: 100%;
   line-height: 20px;
-  text-align: center;
-  padding: 22px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 100);
-  background-color: white;
-  margin-right: 5px;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: -2px 0 16px rgba(0, 0, 0, 0.03);
+  border-left: 1px solid rgba(0, 0, 0, 0.04);
+  background-color: #ffffff;
+  z-index: 2;
+  overflow-y: auto;
 }
 
 .right-title {
-  color: rgba(16, 16, 16, 100);
+  color: #1f2937;
   font-size: 18px;
   text-align: left;
-  font-weight: bold;
-  margin: 0 0 30px 0;
+  font-weight: 600;
+  margin: 0 0 24px 0;
 }
 
 .right-container .option-line-view {
-  padding: 0;
-  width: 280px;
-  height: 42px;
-  line-height: 20px;
-  border-radius: 8px;
-  text-align: center;
-  margin-bottom: 10px;
-  border: 1px solid rgb(231, 229, 229);
+  padding: 12px 16px;
+  width: 100%;
+  height: auto;
+  line-height: normal;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  background-color: #f9fafb;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease;
+}
+
+.right-container .option-line-view:hover {
+  background-color: #f3f4f6;
 }
 
 .right-container .option-line-title {
-  color: rgba(16, 16, 16, 100);
-  line-height: 40px;
+  color: #374151;
   font-size: 14px;
+  font-weight: 500;
   text-align: left;
 }
 
 .option-line-sub-title {
-  color: rgb(82, 81, 81);
-  line-height: 50px;
-  font-size: 14px;
+  color: #4b5563;
+  line-height: 32px;
+  font-size: 13px;
   text-align: left;
+}
+
+.sub-option-line {
+  padding: 0 16px;
+  margin-bottom: 12px;
+}
+
+/* 按钮微调 */
+::v-deep .el-radio-button__inner {
+  border-radius: 4px !important;
+  border: 1px solid #dcdfe6 !important;
+  box-shadow: none !important;
+  margin-right: 4px;
+}
+::v-deep .el-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 </style>

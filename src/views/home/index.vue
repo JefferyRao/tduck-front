@@ -1,37 +1,48 @@
 <template>
   <div class="home-container">
+    <!-- 顶部高奢毛玻璃导航栏 -->
     <div class="header-container">
-      <div>
-        <img class="header-logo-img" src="~@/assets/images/logo-blue.png" @click="$router.push({ path: '/' })" />
+      <div class="left-header">
+        <div class="logo-wrapper" @click="$router.push({ path: '/' })">
+          <img src="@/assets/images/logo-tduck-ce.svg" alt="TDUCK Logo" class="home-logo-img" />
+        </div>
       </div>
       <div class="right-header">
-        <el-popover placement="bottom-end" trigger="click" width="150">
+        <!-- 高级玻璃拟态用户头像与下拉框 -->
+        <el-popover placement="bottom-end" trigger="click" width="200" popper-class="premium-user-popover">
           <div class="user-person-menu">
-            <div>
-              <p v-if="getUserInfo" class="nick-name">
-                {{ getUserInfo.name }}
-              </p>
+            <div class="user-profile-summary" v-if="getUserInfo">
+              <img :src="getUserInfo.avatar" class="popover-avatar" />
+              <div class="popover-meta">
+                <p class="nick-name">{{ getUserInfo.name || '未命名用户' }}</p>
+                <span class="user-role-badge" :class="{ 'admin-badge': getUserInfo.admin }">
+                  {{ getUserInfo.admin ? '系统管理员' : '官方会员' }}
+                </span>
+              </div>
             </div>
             <el-divider />
-            <div>
-              <p class="person-menu-item" @click="$router.push({ path: '/home/member' })">
-                <font-icon class="fab fa-get-pocket" />
-                我的账户
-              </p>
+            <div class="person-menu-links">
+              <div class="person-menu-item" @click="$router.push({ path: '/home/member' })">
+                <i class="el-icon-user" />
+                <span>我的账户</span>
+              </div>
               <el-divider />
-              <p class="person-menu-item" @click="logoutHandle">
-                <font-icon class="fas fa-sign-out" />
-                退出登录
-              </p>
+              <div class="person-menu-item logout-item" @click="logoutHandle">
+                <i class="el-icon-switch-button" />
+                <span>退出登录</span>
+              </div>
             </div>
           </div>
-          <div slot="reference">
+          <div slot="reference" class="avatar-trigger-wrapper">
             <img v-if="getUserInfo" :src="getUserInfo.avatar" class="user-avatar" />
           </div>
         </el-popover>
       </div>
     </div>
+
+    <!-- 主体框架容器 -->
     <div class="content-container">
+      <!-- 悬浮侧边栏 -->
       <div class="menu-box">
         <div class="menu-view">
           <div
@@ -41,18 +52,34 @@
             :class="defaultActiveMenu === menu.route ? 'menu-item-active menu-item' : 'menu-item'"
             @click="menuClickHandle(menu)"
           >
-            <font-icon :class="menu.icon" />
-            <span>{{ menu.name }}</span>
+            <font-icon :class="menu.icon" class="menu-icon" />
+            <span class="menu-label">{{ menu.name }}</span>
+          </div>
+        </div>
+
+        <!-- 侧边栏底部：登出和版权 -->
+        <div class="menu-footer">
+          <div class="logout-btn-wrapper">
+            <button class="logout-action-btn" @click="logoutHandle">
+              <i class="el-icon-switch-button" />
+              <span>退出登录</span>
+            </button>
+          </div>
+
+          <div class="about-container">
+            <span class="desc-text">
+              <a href="https://www.tduckcloud.com" target="view_window">TDUCK 官网</a>
+              <span class="copyright-text">© 2026 TDUCK Group</span>
+            </span>
           </div>
         </div>
       </div>
+
+      <!-- 右侧主展示区 -->
       <div class="view-container">
-        <router-view />
-        <el-footer>
-          <div class="about-container">
-            <span class="desc-text"><a href="https://www.tduckcloud.com" target="view_window">TDUCK官网</a></span>
-          </div>
-        </el-footer>
+        <div class="router-view-wrapper">
+          <router-view />
+        </div>
       </div>
     </div>
   </div>
@@ -199,151 +226,404 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$menuActiveText: #409eff;
+@import '@/assets/styles/variables.scss';
 
+/* 1. 主页面布局容器 */
 .home-container {
-  background-color: rgba(247, 247, 247, 90);
+  background-color: #f5f5f7; // 苹果招牌浅色偏冷灰
   display: flex;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   flex-direction: column;
-}
-
-.content-container {
-  height: 100%;
   overflow: hidden;
-  display: flex;
-  flex-direction: row;
-
-  .view-container {
-    flex-direction: column;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* 2. 顶部高奢毛玻璃导航栏 */
 .header-container {
   display: flex;
   justify-content: space-between;
-  background-color: #fff;
-  height: 45px;
-  line-height: 45px;
-  border-bottom: 1px solid #dcdfe6;
-  min-width: 1024px;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.72);
+  height: 60px;
+  padding: 0 40px 0 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  z-index: 100;
+  flex-shrink: 0;
 
-  .header-logo-img {
-    width: 100px;
-    float: left;
-    margin-top: 5px;
-    margin-left: 55px;
+  .left-header {
+    display: flex;
+    align-items: center;
+    width: 230px;
+    justify-content: center;
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        transform: scale(1.03);
+        filter: drop-shadow(0 4px 12px rgba(51, 112, 255, 0.15));
+      }
+
+      .home-logo-img {
+        width: auto;
+        display: block;
+      }
+    }
   }
 
   .right-header {
     display: flex;
-    flex-direction: row;
+    align-items: center;
 
-    > * {
-      margin: 0 20px;
+    .avatar-trigger-wrapper {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        border-color: rgba(51, 112, 255, 0.2);
+        transform: scale(1.05);
+        .user-avatar {
+          box-shadow: 0 4px 16px rgba(51, 112, 255, 0.15);
+        }
+      }
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
   }
+}
 
-  .user-avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 100px;
-    cursor: pointer;
-    vertical-align: middle;
-  }
+/* 3. 主体框架与悬浮侧边栏 */
+.content-container {
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .menu-box {
-  min-width: 12%;
+  width: 230px;
+  flex-shrink: 0;
   display: flex;
-  padding: 5px;
+  margin: 20px 0 20px 20px;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 100);
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
+  padding: 16px 12px;
+  box-sizing: border-box;
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #515154;
+    font-size: 14.5px;
+    font-weight: 500;
+    padding: 12px 16px;
+    margin-bottom: 6px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-sizing: border-box;
+
+    .menu-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      color: #86868b;
+      transition: all 0.25s ease;
+    }
+
+    .menu-label {
+      letter-spacing: 0.3px;
+      transition: transform 0.25s ease;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.035);
+      color: #1d1d1f;
+
+      .menu-icon {
+        color: #1d1d1f;
+        transform: scale(1.1);
+      }
+
+      .menu-label {
+        transform: translateX(2px);
+      }
+    }
+
+    &.menu-item-active {
+      background: linear-gradient(135deg, $color-primary 0%, #1d4ed8 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 20px rgba(51, 112, 255, 0.25);
+      font-weight: 600;
+
+      .menu-icon {
+        color: #ffffff !important;
+      }
+
+      &:hover {
+        .menu-label {
+          transform: none;
+        }
+      }
+    }
+  }
 
   .menu-view {
     flex: 1;
-    padding: 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 
-    .menu-item-active {
-      color: #ffffff !important;
-      background-color: $menuActiveText;
+    /* 隐藏滚动条 */
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  .menu-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    padding-top: 16px;
+    margin-top: 8px;
+
+    .logout-btn-wrapper {
+      padding: 0 16px;
+      margin-bottom: 16px;
+
+      .logout-action-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: #f1f2f5;
+        color: #515154;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 9px 0;
+        font-size: 13.5px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+        font-family: inherit;
+        outline: none;
+
+        i {
+          font-size: 15px;
+          color: #86868b;
+          transition: all 0.25s ease;
+        }
+
+        &:hover {
+          background-color: rgba(255, 59, 48, 0.06);
+          border-color: rgba(255, 59, 48, 0.15);
+          color: #ff3b30;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(255, 59, 48, 0.1);
+
+          i {
+            color: #ff3b30;
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
     }
 
-    .menu-item {
-      color: #333;
-      font-size: 16px;
-      line-height: 20px;
-      padding: 5px 15px;
-      margin-top: 15px;
-      border-radius: 5px;
+    .about-container {
       text-align: center;
+      font-size: 11px;
+      color: #86868b;
+      font-weight: 400;
+
+      a {
+        color: #86868b;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+
+      .desc-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        line-height: 1.2;
+      }
+    }
+  }
+}
+
+/* 4. 右侧主展示视口 */
+.view-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  .router-view-wrapper {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+}
+
+/* 6. 头像弹窗下拉框内部结构样式 */
+.user-person-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+
+  .user-profile-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 8px 12px 8px;
+
+    .popover-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(51, 112, 255, 0.1);
+    }
+
+    .popover-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+
+      .nick-name {
+        margin: 0;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: #1d1d1f;
+        letter-spacing: -0.2px;
+      }
+
+      .user-role-badge {
+        font-size: 10px;
+        font-weight: 600;
+        color: #3b82f6;
+        background: rgba(59, 130, 246, 0.08);
+        padding: 2px 6px;
+        border-radius: 6px;
+        align-self: flex-start;
+
+        &.admin-badge {
+          color: #ff9500;
+          background: rgba(255, 149, 0, 0.08);
+        }
+      }
+    }
+  }
+
+  .person-menu-links {
+    display: flex;
+    flex-direction: column;
+
+    .person-menu-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #515154;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 10px;
+
+      i {
+        font-size: 15px;
+        color: #86868b;
+        transition: color 0.2s ease;
+      }
 
       &:hover {
-        cursor: pointer;
-        color: $menuActiveText;
+        background-color: rgba(51, 112, 255, 0.06);
+        color: $color-primary;
+
+        i {
+          color: $color-primary;
+        }
       }
 
-      & .fas:hover {
-        color: $menuActiveText;
-      }
+      &.logout-item:hover {
+        background-color: rgba(255, 59, 48, 0.06);
+        color: #ff3b30;
 
-      .fas {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin: 5px;
+        i {
+          color: #ff3b30;
+        }
       }
+    }
 
-      span {
-        margin-left: 10px;
-      }
+    .el-divider--horizontal {
+      margin: 4px 0;
+      background-color: rgba(0, 0, 0, 0.035);
     }
   }
 }
+</style>
 
-.user-person-menu {
-  .nick-name {
-    height: 16px;
-    color: rgba(70, 70, 70, 86);
-    font-size: 14px;
-    line-height: 16px;
-    text-align: left;
-  }
+<!-- 7. 全局覆盖 ElementUI 下拉弹窗样式，应用极致玻璃拟态 -->
+<style lang="scss">
+.premium-user-popover.el-popover {
+  border-radius: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+  padding: 12px 10px !important;
 
-  .person-menu-item {
-    color: rgba(70, 70, 70, 86);
-    font-size: 14px;
-    text-align: left;
-
-    &:hover {
-      cursor: pointer;
-      color: $menuActiveText;
-    }
-  }
-
-  .el-divider {
-    margin: 5px 0;
-  }
-
-  .person-menu-divider {
-    background-color: rgba(210, 210, 210, 78);
-    border: 1px solid rgba(210, 210, 210, 78);
-  }
-}
-
-.about-container {
-  text-align: center;
-
-  .fa-user {
-    font-size: 19px;
-    color: rgba(172, 172, 172, 100);
-    margin: 1px;
+  /* 重置弹窗内部 ElementUI 的 divider */
+  .el-divider--horizontal {
+    margin: 8px 0 !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
   }
 }
 </style>

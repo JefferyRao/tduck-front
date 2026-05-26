@@ -46,3 +46,6 @@ export const saveUserThemeRequest = (data) => postRequest('/user/form/theme/save
 
 // 查询表单主题
 export const getUserThemeRequest = (projectKey) => getRequest(`/user/form/theme/${projectKey}`)
+
+// 批量创建项目表单项
+export const batchCreateProjectItem = (data) => postRequest('/user/form/item/batch/create', data)

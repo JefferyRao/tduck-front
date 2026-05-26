@@ -30,38 +30,52 @@ export default {
         renderer: 'svg'
       },
       option: {
+        legend: {
+          show: true,
+          top: 0,
+          right: 40,
+          textStyle: { color: '#666' }
+        },
+        toolbox: {
+          show: true,
+          top: -5,
+          right: 0,
+          feature: {
+            saveAsImage: { show: true, title: '保存为图片' }
+          }
+        },
         tooltip: {
           trigger: 'axis',
-          extraCssText: 'z-index:1'
+          axisPointer: { type: 'shadow' },
+          backgroundColor: '#fff',
+          padding: [10, 15],
+          textStyle: { color: '#333' },
+          extraCssText: 'box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); z-index:1'
         },
         grid: {
-          top: '0%',
-          left: '2%',
-          right: '20%',
-          bottom: '0%',
+          top: '5%',
+          left: '5%',
+          right: '10%',
+          bottom: '5%',
           containLabel: true
         },
         xAxis: [
           {
-            splitLine: {
-              show: false
-            },
             type: 'value',
-            show: false
+            splitLine: {
+              lineStyle: { type: 'dashed', color: '#E8E8E8' }
+            },
+            axisLabel: { color: '#666' },
+            axisLine: { show: false },
+            axisTick: { show: false }
           }
         ],
         yAxis: [
           {
-            splitLine: {
-              show: false
-            },
-            axisLine: {
-              show: false
-            },
             type: 'category',
-            axisTick: {
-              show: false
-            },
+            axisLine: { lineStyle: { color: '#D9D9D9' } },
+            axisTick: { show: false },
+            axisLabel: { color: '#666' },
             data: []
           }
         ],
@@ -69,20 +83,24 @@ export default {
           {
             name: '数量',
             type: 'bar',
-            barWidth: 15,
+            barWidth: 16,
             label: {
               show: true,
               position: 'right',
-              color: '#1890FF',
+              color: '#666',
               fontSize: 12,
               formatter: ({ data }) => {
                 return `${data}`
               }
             },
             itemStyle: {
-              borderRadius: 10,
-              borderColor: '#fff',
-              borderWidth: 2
+              borderRadius: [0, 4, 4, 0],
+              color: '#1890FF'
+            },
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.1)',
+              borderRadius: [0, 4, 4, 0]
             },
             data: []
           }

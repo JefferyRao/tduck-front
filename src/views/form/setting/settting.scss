@@ -1,65 +1,117 @@
 .project-setting-view {
   height: 100%;
-  line-height: 20px;
-  border-radius: 7px;
-  color: rgba(16, 16, 16, 100);
+  color: #111827;
   font-size: 14px;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 100);
-  background-color: white;
-  padding: 10px;
-  margin-left: 20px;
+  background-color: transparent;
+  padding: 10px 20px 40px 10px;
+
   .el-form {
-    width: 70%;
-    margin-left: 20px;
+    max-width: 680px;
   }
 }
 
 .project-setting-title {
-  color: rgba(16, 16, 16, 100);
+  color: #111827;
   font-size: 18px;
   text-align: left;
-  font-weight: 550;
-  margin-left: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  .title-desc {
+    font-size: 13px;
+    color: #6b7280;
+    margin-left: 16px;
+    font-weight: 400;
+  }
 }
+
 .setting-item {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  line-height: 45px;
-  height: 45px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f3f4f6;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   .label {
-    color: rgba(16, 16, 16, 100) !important;
+    color: #374151 !important;
     font-size: 14px;
+    font-weight: 500;
     text-align: left;
-    line-height: 20px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    i {
+      color: #9ca3af;
+      margin-left: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      &:hover {
+        color: #6b7280;
+      }
+    }
   }
-  .label {
-    width: 80%;
-  }
+
   .el-switch {
-    width: 20%;
+    flex-shrink: 0;
   }
 }
 
-::v-deep.el-form-item {
+::v-deep .el-form-item {
   margin-bottom: 0 !important;
 }
 ::v-deep .el-form-item + .el-form-item {
-  margin-top: 10px !important;
-  padding-bottom: 15px;
+  margin-top: 16px !important;
 }
 
 .project-setting-sub-label {
-  color: rgba(144, 147, 149, 100);
-  font-size: 14px;
+  color: #9ca3af;
+  font-size: 13px;
   text-align: left;
+  margin-top: 8px;
   margin-left: 2px;
-  line-height: 20px;
+  line-height: 1.5;
 }
+
 .submit-btn {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: left;
+
+  .el-button {
+    padding: 10px 24px;
+    border-radius: 6px;
+  }
+}
+
+::v-deep .segmented-control {
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  padding: 3px;
+  display: inline-flex;
+  border: 1px solid #e5e7eb;
+
+  .el-radio-button__inner {
+    border: none !important;
+    background: transparent;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    padding: 8px 16px;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    font-size: 13px;
+  }
+
+  .el-radio-button.is-active .el-radio-button__inner {
+    background-color: #ffffff;
+    color: #111827;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  }
 }

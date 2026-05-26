@@ -1,262 +1,326 @@
 <template>
   <div class="project-setting-view">
-    <p class="project-setting-title">
-      回收设置
-      <span class="small-font-size ml20 text-secondary-color"> 自定义表单收集收集时间，次数，以及限制填写环境等 </span>
-    </p>
+    <div class="setting-header">
+      <h3 class="setting-title">回收设置</h3>
+      <p class="setting-desc">自定义表单收集时间、次数，以及限制填写环境等</p>
+    </div>
     <el-divider />
-    <el-form ref="writeSettingForm" :model="writeSettingForm" :rules="settingRules" label-position="left">
-      <div class="setting-item">
-        <p class="label">
-          密码填写
-          <el-tooltip class="item" content="开启后需要输入密码才能进入填写页面" effect="dark" placement="top-start">
-            <i class="el-icon-question" />
-          </el-tooltip>
-        </p>
-        <el-switch v-model="writeSettingForm.passwordWriteStatus" />
-      </div>
-      <div v-if="writeSettingForm.passwordWriteStatus">
-        <el-form-item :rules="[{ required: true, message: '请输入填写密码', trigger: 'blur' }]" prop="writePassword">
-          <el-input v-model="writeSettingForm.writePassword" placeholder="请输入填写密码" />
-        </el-form-item>
-      </div>
-      <div class="setting-item">
-        <p class="label">每个微信答题次数限制</p>
-        <el-switch
-          v-model="writeSettingForm.wxWriteCountLimitStatus"
-          @change="
-            () => {
-              writeSettingForm.recordWxUser = true
-              writeSettingForm.onlyWxWrite = true
-            }
-          "
-        />
-      </div>
-      <div v-if="writeSettingForm.wxWriteCountLimitStatus">
-        <el-row>
-          <el-col :span="8">
-            <el-select v-model="writeSettingForm.wxWriteCountLimitDateType">
-              <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
-                {{ d.label }}
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            答题
-            <el-input-number v-model="writeSettingForm.wxWriteCountLimit" :min="1" />
-            次
-          </el-col>
-        </el-row>
-        <el-input
-          v-model="writeSettingForm.wxWriteCountLimitText"
-          class="mt10"
-          placeholder="该微信已经提交过数据，不可重复提交，有问题请与表单发布者联系"
-        />
-      </div>
-      <div class="setting-item">
-        <p class="label">
-          每个IP答题次数限制
-          <el-tooltip
-            placement="top-start"
-            content=" 此属性用于指定每一个IP地址只能提交一次表单，可以防止用户在同一台计算机上进行多次提交。"
-          >
-            <i class="el-icon-question" />
-          </el-tooltip>
-        </p>
-        <el-switch v-model="writeSettingForm.ipWriteCountLimitStatus" />
-      </div>
-      <div class="setting-item">
-        <p class="label">
-          每个账号答题次数限制
-          <el-tooltip
-            placement="top-start"
-            content=" 此属性用于指定每一个账号只能提交指定次表单，防止用户重复提交过指定次数。"
-          >
-            <i class="el-icon-question" />
-          </el-tooltip>
-        </p>
-        <el-switch v-model="writeSettingForm.accountWriteCountLimitStatus" />
-      </div>
-      <div v-if="writeSettingForm.accountWriteCountLimitStatus">
-        <el-row>
-          <el-col :span="8">
-            <el-select v-model="writeSettingForm.accountWriteCountLimitDateType">
-              <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
-                {{ d.label }}
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            答题
-            <el-input-number v-model="writeSettingForm.accountWriteCountLimit" :min="1" />
-            次
-          </el-col>
-        </el-row>
-        <el-input
-          v-model="writeSettingForm.accountWriteCountLimitText"
-          class="mt10"
-          placeholder="该账号已经提交过数据，不可重复提交，有问题请与表单发布者联系"
-        />
-      </div>
-      <div class="setting-item">
-        <p class="label">
-          每台设备次数限制
-          <el-tooltip placement="top-start" content="此功能依赖浏览器的本地存储，不能保证100%有效。">
-            <i class="el-icon-question" />
-          </el-tooltip>
-        </p>
-        <el-switch v-model="writeSettingForm.deviceWriteCountLimitStatus" />
-      </div>
-      <div v-if="writeSettingForm.deviceWriteCountLimitStatus">
-        <el-row>
-          <el-col :span="12">
-            答题
-            <el-input-number v-model="writeSettingForm.deviceWriteCountLimit" :min="1" />
-            次
-          </el-col>
-        </el-row>
-        <el-input
-          v-model="writeSettingForm.deviceWriteCountLimitText"
-          class="mt10"
-          placeholder="该设备已经提交过数据，不可重复提交，有问题请与表单发布者联系"
-        />
-      </div>
-      <div class="setting-item">
-        <p class="label">
-          设定答题次数上限
-          <el-tooltip placement="top-start" content="当答题次数达到上限后，表单将无法提交数据，进入将显示提示文案">
-            <i class="el-icon-question" />
-          </el-tooltip>
-        </p>
-        <el-switch v-model="writeSettingForm.totalWriteCountLimitStatus" />
-      </div>
-      <div v-if="writeSettingForm.totalWriteCountLimitStatus">
-        <el-row>
-          <el-col :span="8">
-            <el-select v-model="writeSettingForm.totalWriteCountLimitDateType">
-              <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
-                {{ d.label }}
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            答题
-            <el-input-number v-model="writeSettingForm.totalWriteCountLimit" :min="1" />
-            次
-          </el-col>
-        </el-row>
-        <el-input
-          v-model="writeSettingForm.totalWriteCountLimitText"
-          class="mt10"
-          placeholder="该表单收集数据已经达到上限，有问题请与表单发布者联系"
-        />
-      </div>
-      <div class="setting-item">
-        <p class="label">
-          允许填写时间
-          <el-tooltip
-            placement="top-start"
-            content="当进入设置的时间范围内，用户能访问表单并提交数据，否则将会显示对应文案"
-          >
-            <i class="el-icon-question" />
-          </el-tooltip>
-        </p>
-        <el-switch v-model="writeSettingForm.writeInterviewTimeStatus" />
-      </div>
-      <div v-if="writeSettingForm.writeInterviewTimeStatus">
-        <el-row>
-          <el-col :span="5">
-            <el-checkbox v-model="writeSettingForm.writeInterviewDayTimeStatus"> 限制每天访问的时间范围 </el-checkbox>
-          </el-col>
-        </el-row>
-        <div v-if="writeSettingForm.writeInterviewDayTimeStatus">
-          <el-row class="mt10">
-            <el-col :span="13">
-              <el-date-picker
-                v-model="writeSettingForm.writeInterviewDateRange"
-                type="daterange"
-                value-format="yyyy-MM-dd"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
-            </el-col>
-          </el-row>
-          <el-row class="mt10">
-            <el-col :span="13">
-              <el-time-picker
-                v-model="writeSettingForm.writeInterviewTimeRange"
-                is-range
-                range-separator="-"
-                value-format="HH:mm:ss"
-                start-placeholder="开始时间"
-                end-placeholder="结束时间"
-                placeholder="选择时间范围"
-              />
-            </el-col>
-          </el-row>
+    <el-form
+      ref="writeSettingForm"
+      :model="writeSettingForm"
+      :rules="settingRules"
+      label-position="left"
+      class="setting-form"
+    >
+      <!-- 密码填写 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">
+            密码填写
+            <el-tooltip class="item" content="开启后需要输入密码才能进入填写页面" effect="dark" placement="top">
+              <i class="el-icon-info" />
+            </el-tooltip>
+          </p>
+          <el-switch v-model="writeSettingForm.passwordWriteStatus" />
         </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.passwordWriteStatus" class="setting-sub-box">
+            <el-form-item
+              :rules="[{ required: true, message: '请输入填写密码', trigger: 'blur' }]"
+              prop="writePassword"
+            >
+              <el-input
+                v-model="writeSettingForm.writePassword"
+                placeholder="请设置访问密码"
+                prefix-icon="el-icon-lock"
+              />
+            </el-form-item>
+          </div>
+        </el-collapse-transition>
+      </div>
 
-        <el-row v-else class="mt10">
-          <el-col :span="12">
-            <el-date-picker
-              v-model="writeSettingForm.writeInterviewDateTimeRange"
-              type="datetimerange"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
-          </el-col>
-        </el-row>
-        <div class="checkbox-group mt10">
-          <el-checkbox-group v-model="writeSettingForm.writeInterviewTimeWhichDays">
-            <el-checkbox label="2"> 周一 </el-checkbox>
-            <el-checkbox label="3"> 周二 </el-checkbox>
-            <el-checkbox label="4"> 周三 </el-checkbox>
-            <el-checkbox label="5"> 周四 </el-checkbox>
-            <el-checkbox label="6"> 周五 </el-checkbox>
-            <el-checkbox label="7"> 周六 </el-checkbox>
-            <el-checkbox label="1"> 周日 </el-checkbox>
-          </el-checkbox-group>
-        </div>
-        <el-input
-          v-model="writeSettingForm.writeInterviewTimeText"
-          class="mt10"
-          placeholder="此表单设置了访问时间，当前时间无法访问，有问题请与表单发布者联系"
-        />
-      </div>
-      <div class="setting-item">
-        <p class="label">只能在微信中填写</p>
-        <el-switch
-          v-model="writeSettingForm.onlyWxWrite"
-          @change="
-            (val) => {
-              if (!writeSettingForm.onlyWxWrite && !val) {
-                writeSettingForm.recordWxUser = false
-              }
-            }
-          "
-        />
-      </div>
-      <div class="setting-item">
-        <p class="label">记录微信用户个人信息</p>
-        <el-switch
-          v-model="writeSettingForm.recordWxUser"
-          @change="
-            (val) => {
-              if (!writeSettingForm.onlyWxWrite && val) {
+      <!-- 每个微信答题次数限制 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">微信答题次数限制</p>
+          <el-switch
+            v-model="writeSettingForm.wxWriteCountLimitStatus"
+            @change="
+              () => {
+                writeSettingForm.recordWxUser = true
                 writeSettingForm.onlyWxWrite = true
               }
-            }
-          "
-        />
+            "
+          />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.wxWriteCountLimitStatus" class="setting-sub-box">
+            <div class="sub-box-row">
+              <el-select v-model="writeSettingForm.wxWriteCountLimitDateType" class="date-type-select">
+                <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
+                  {{ d.label }}
+                </el-option>
+              </el-select>
+              <span class="sub-text">限制答题</span>
+              <el-input-number v-model="writeSettingForm.wxWriteCountLimit" :min="1" class="limit-input" />
+              <span class="sub-text">次</span>
+            </div>
+            <el-input
+              v-model="writeSettingForm.wxWriteCountLimitText"
+              class="mt10"
+              placeholder="自定义提示文案：该微信已经提交过数据，不可重复提交..."
+            />
+          </div>
+        </el-collapse-transition>
       </div>
-      <el-row>
-        <p class="project-setting-sub-label">* 开启后将会授权登录，提供微信昵称、性别、城市信息</p>
-      </el-row>
-      <div class="submit-btn">
-        <el-button type="primary" @click="saveSettingHandle"> 保存设置 </el-button>
+
+      <!-- 每个IP答题次数限制 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">
+            IP答题次数限制
+            <el-tooltip placement="top" content="限制同一个IP地址的提交次数，防止恶意刷单">
+              <i class="el-icon-info" />
+            </el-tooltip>
+          </p>
+          <el-switch v-model="writeSettingForm.ipWriteCountLimitStatus" />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.ipWriteCountLimitStatus" class="setting-sub-box">
+            <div class="sub-box-row">
+              <el-select v-model="writeSettingForm.ipWriteCountLimitDateType" class="date-type-select">
+                <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
+                  {{ d.label }}
+                </el-option>
+              </el-select>
+              <span class="sub-text">限制答题</span>
+              <el-input-number v-model="writeSettingForm.ipWriteCountLimit" :min="1" class="limit-input" />
+              <span class="sub-text">次</span>
+            </div>
+            <el-input
+              v-model="writeSettingForm.ipWriteCountLimitText"
+              class="mt10"
+              placeholder="自定义提示文案：该IP已经提交过数据，不可重复提交..."
+            />
+          </div>
+        </el-collapse-transition>
+      </div>
+
+      <!-- 每个账号答题次数限制 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">
+            账号答题次数限制
+            <el-tooltip placement="top" content="限制同一个登录账号的提交次数">
+              <i class="el-icon-info" />
+            </el-tooltip>
+          </p>
+          <el-switch v-model="writeSettingForm.accountWriteCountLimitStatus" />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.accountWriteCountLimitStatus" class="setting-sub-box">
+            <div class="sub-box-row">
+              <el-select v-model="writeSettingForm.accountWriteCountLimitDateType" class="date-type-select">
+                <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
+                  {{ d.label }}
+                </el-option>
+              </el-select>
+              <span class="sub-text">限制答题</span>
+              <el-input-number v-model="writeSettingForm.accountWriteCountLimit" :min="1" class="limit-input" />
+              <span class="sub-text">次</span>
+            </div>
+            <el-input
+              v-model="writeSettingForm.accountWriteCountLimitText"
+              class="mt10"
+              placeholder="自定义提示文案：该账号已经提交过数据，不可重复提交..."
+            />
+          </div>
+        </el-collapse-transition>
+      </div>
+
+      <!-- 每台设备次数限制 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">
+            设备答题次数限制
+            <el-tooltip placement="top" content="依赖浏览器的本地存储，换浏览器或清空缓存后会失效">
+              <i class="el-icon-info" />
+            </el-tooltip>
+          </p>
+          <el-switch v-model="writeSettingForm.deviceWriteCountLimitStatus" />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.deviceWriteCountLimitStatus" class="setting-sub-box">
+            <div class="sub-box-row">
+              <span class="sub-text">总共限制答题</span>
+              <el-input-number v-model="writeSettingForm.deviceWriteCountLimit" :min="1" class="limit-input" />
+              <span class="sub-text">次</span>
+            </div>
+            <el-input
+              v-model="writeSettingForm.deviceWriteCountLimitText"
+              class="mt10"
+              placeholder="自定义提示文案：该设备已经提交过数据，不可重复提交..."
+            />
+          </div>
+        </el-collapse-transition>
+      </div>
+
+      <!-- 设定答题次数上限 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">
+            表单收集总数上限
+            <el-tooltip placement="top" content="当表单收集的数据量达到该上限后，将停止收集并提示用户">
+              <i class="el-icon-info" />
+            </el-tooltip>
+          </p>
+          <el-switch v-model="writeSettingForm.totalWriteCountLimitStatus" />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.totalWriteCountLimitStatus" class="setting-sub-box">
+            <div class="sub-box-row">
+              <el-select v-model="writeSettingForm.totalWriteCountLimitDateType" class="date-type-select">
+                <el-option v-for="d in dateRangeList" :key="d.value" :label="d.label" :value="d.value">
+                  {{ d.label }}
+                </el-option>
+              </el-select>
+              <span class="sub-text">最多收集</span>
+              <el-input-number v-model="writeSettingForm.totalWriteCountLimit" :min="1" class="limit-input" />
+              <span class="sub-text">份</span>
+            </div>
+            <el-input
+              v-model="writeSettingForm.totalWriteCountLimitText"
+              class="mt10"
+              placeholder="自定义提示文案：该表单收集数据已经达到上限..."
+            />
+          </div>
+        </el-collapse-transition>
+      </div>
+
+      <!-- 允许填写时间 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">
+            定时收集与访问时间限制
+            <el-tooltip placement="top" content="设定用户可以访问表单和提交数据的具体时间范围">
+              <i class="el-icon-info" />
+            </el-tooltip>
+          </p>
+          <el-switch v-model="writeSettingForm.writeInterviewTimeStatus" />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.writeInterviewTimeStatus" class="setting-sub-box">
+            <div class="mb10">
+              <el-checkbox v-model="writeSettingForm.writeInterviewDayTimeStatus"> 每天特定时间段可访问 </el-checkbox>
+            </div>
+
+            <div v-if="writeSettingForm.writeInterviewDayTimeStatus" class="time-range-box">
+              <div class="mb10">
+                <span class="sub-text label-text">生效日期：</span>
+                <el-date-picker
+                  v-model="writeSettingForm.writeInterviewDateRange"
+                  type="daterange"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  class="full-width-picker"
+                />
+              </div>
+              <div class="mb10">
+                <span class="sub-text label-text">每天时段：</span>
+                <el-time-picker
+                  v-model="writeSettingForm.writeInterviewTimeRange"
+                  is-range
+                  range-separator="至"
+                  value-format="HH:mm:ss"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  class="full-width-picker"
+                />
+              </div>
+            </div>
+
+            <div v-else class="mb10">
+              <span class="sub-text label-text">生效时间：</span>
+              <el-date-picker
+                v-model="writeSettingForm.writeInterviewDateTimeRange"
+                type="datetimerange"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                class="full-width-picker"
+              />
+            </div>
+
+            <div class="checkbox-group mb10">
+              <span class="sub-text label-text">生效星期：</span>
+              <el-checkbox-group v-model="writeSettingForm.writeInterviewTimeWhichDays" class="days-checkbox">
+                <el-checkbox label="2"> 周一 </el-checkbox>
+                <el-checkbox label="3"> 周二 </el-checkbox>
+                <el-checkbox label="4"> 周三 </el-checkbox>
+                <el-checkbox label="5"> 周四 </el-checkbox>
+                <el-checkbox label="6"> 周五 </el-checkbox>
+                <el-checkbox label="7"> 周六 </el-checkbox>
+                <el-checkbox label="1"> 周日 </el-checkbox>
+              </el-checkbox-group>
+            </div>
+
+            <el-input
+              v-model="writeSettingForm.writeInterviewTimeText"
+              class="mt10"
+              placeholder="自定义提示文案：当前不在表单开放时间内..."
+            />
+          </div>
+        </el-collapse-transition>
+      </div>
+
+      <!-- 只能在微信中填写 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">只能在微信中填写</p>
+          <el-switch
+            v-model="writeSettingForm.onlyWxWrite"
+            @change="
+              (val) => {
+                if (!writeSettingForm.onlyWxWrite && !val) {
+                  writeSettingForm.recordWxUser = false
+                }
+              }
+            "
+          />
+        </div>
+      </div>
+
+      <!-- 记录微信用户个人信息 -->
+      <div class="setting-group">
+        <div class="setting-item">
+          <p class="label">获取微信用户个人信息</p>
+          <el-switch
+            v-model="writeSettingForm.recordWxUser"
+            @change="
+              (val) => {
+                if (!writeSettingForm.onlyWxWrite && val) {
+                  writeSettingForm.onlyWxWrite = true
+                }
+              }
+            "
+          />
+        </div>
+        <el-collapse-transition>
+          <div v-if="writeSettingForm.recordWxUser" class="mt10">
+            <p class="project-setting-sub-label">
+              <i class="el-icon-warning-outline" /> 开启后将会要求用户授权登录，获取用户的微信昵称、头像等信息
+            </p>
+          </div>
+        </el-collapse-transition>
+      </div>
+
+      <div class="submit-btn-wrapper">
+        <el-button type="primary" class="save-btn" icon="el-icon-check" @click="saveSettingHandle">
+          保存设置
+        </el-button>
       </div>
     </el-form>
   </div>
@@ -376,7 +440,150 @@ export default {
 <style lang="scss" scoped>
 @import 'settting';
 
-.checkbox-group .el-checkbox {
-  margin-right: 23px;
+.project-setting-view {
+  .setting-header {
+    margin-bottom: 20px;
+
+    .setting-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0 0 8px 0;
+    }
+
+    .setting-desc {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+
+  .el-divider {
+    margin: 20px 0;
+    background-color: #f3f4f6;
+  }
+
+  .setting-form {
+    max-width: 720px;
+  }
+
+  .setting-group {
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+
+    // Use nth-last-child(2) since the submit button wrapper is the last child
+    &:nth-last-child(2) {
+      border-bottom: none;
+    }
+
+    .setting-item {
+      border-bottom: none;
+      padding: 8px 0;
+    }
+  }
+
+  .setting-sub-box {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+    border: 1px solid #f3f4f6;
+
+    .sub-box-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .date-type-select {
+        width: 120px;
+        margin-right: 12px;
+      }
+
+      .sub-text {
+        font-size: 14px;
+        color: #4b5563;
+      }
+
+      .limit-input {
+        width: 120px;
+        margin: 0 12px;
+      }
+    }
+
+    .time-range-box {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 12px;
+    }
+
+    .label-text {
+      display: inline-block;
+      width: 80px;
+      text-align: right;
+      margin-right: 12px;
+      color: #6b7280;
+    }
+
+    .full-width-picker {
+      width: calc(100% - 100px);
+      max-width: 400px;
+    }
+
+    .days-checkbox {
+      display: inline-block;
+      width: calc(100% - 100px);
+      vertical-align: top;
+
+      .el-checkbox {
+        margin-right: 20px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .mt10 {
+      margin-top: 12px;
+    }
+
+    .mb10 {
+      margin-bottom: 12px;
+    }
+  }
+
+  .project-setting-sub-label {
+    font-size: 13px;
+    color: #e6a23c;
+    margin: 8px 0 0 0;
+    background: #fdf6ec;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 1px solid #faecd8;
+
+    i {
+      margin-right: 4px;
+      font-size: 14px;
+    }
+  }
+
+  .submit-btn-wrapper {
+    margin-top: 10px;
+    padding-top: 10px;
+
+    .save-btn {
+      padding: 10px 24px;
+      font-size: 14px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(64, 158, 255, 0.15);
+      transition: all 0.2s ease;
+
+      &:hover {
+        box-shadow: 0 4px 8px rgba(64, 158, 255, 0.25);
+        transform: translateY(-1px);
+      }
+    }
+  }
 }
 </style>

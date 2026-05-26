@@ -2,24 +2,27 @@
   <div class="project-setting-view">
     <p class="project-setting-title">
       提交设置
-      <span class="small-font-size ml20 text-secondary-color">
-        自定义表单提交成功后的提示内容，以及可以跳转指定链接
-      </span>
+      <span class="title-desc">自定义表单提交成功后的提示内容，以及可以跳转指定链接</span>
     </p>
     <el-divider />
     <el-form ref="submitSettingForm" :model="submitSettingForm" :rules="settingRules" @submit.native.prevent>
       <div class="setting-item">
-        <p class="label" style="width: 30%">提交后显示方式</p>
-        <el-radio-group v-model="submitSettingForm.submitShowType">
-          <el-radio :label="1"> 系统默认提示 </el-radio>
-          <el-radio :label="2"> 自定义文案 </el-radio>
+        <p class="label">提交后显示方式</p>
+        <el-radio-group v-model="submitSettingForm.submitShowType" size="small" class="segmented-control">
+          <el-radio-button :label="1"> 系统默认提示 </el-radio-button>
+          <el-radio-button :label="2"> 自定义文案 </el-radio-button>
         </el-radio-group>
       </div>
       <div v-if="submitSettingForm.submitShowType === 2" class="mt20">
-        <el-input v-model="submitSettingForm.submitShowCustomPageContent" />
+        <el-input v-model="submitSettingForm.submitShowCustomPageContent" placeholder="请输入自定义的提交成功提示语" />
       </div>
       <div class="setting-item">
-        <p class="label">提交后跳转网页地址</p>
+        <p class="label">
+          提交后跳转网页地址
+          <el-tooltip content="提交成功后将自动跳转到该网址" placement="top">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </p>
         <el-switch v-model="submitSettingForm.submitJump" />
       </div>
       <el-form-item
@@ -29,15 +32,15 @@
           { required: true, message: '请输入跳转地址', trigger: 'blur' },
           {
             type: 'url',
-            message: '请输入正确的url地址',
+            message: '请输入正确的网址 (以 http:// 或 https:// 开头)',
             trigger: ['blur', 'change']
           }
         ]"
       >
-        <el-input v-model="submitSettingForm.submitJumpUrl" placeholder="https://demo.tduckapp.com" />
+        <el-input v-model="submitSettingForm.submitJumpUrl" placeholder="例如：https://tduckapp.com" clearable />
       </el-form-item>
       <div class="submit-btn">
-        <el-button type="primary" @click="saveSettingHandle"> 保存设置 </el-button>
+        <el-button type="primary" icon="el-icon-check" @click="saveSettingHandle"> 保存设置 </el-button>
       </div>
     </el-form>
   </div>

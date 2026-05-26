@@ -43,7 +43,7 @@ Vue.prototype.download = download
 
 Vue.use(VueClipboard)
 Vue.use(meta)
-Vue.use(Element, { size: 'small', zIndex: 3000 })
+Vue.use(Element, { size: 'medium', zIndex: 3000 })
 Vue.config.productionTip = false
 
 new Vue({

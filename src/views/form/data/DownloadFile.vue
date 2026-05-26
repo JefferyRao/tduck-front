@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="导出" :visible.sync="dialogVisible" width="30%" center>
+  <el-dialog title="导出" :visible.sync="dialogVisible" width="30%" center append-to-body>
     默认导出当前页显示数据，建议导出筛选后的数据，可以调整当页大小导出更多数据，<span class="text-danger"
       >导出全量数据可能会导致占用太多资源，影响系统正常使用！</span
     >

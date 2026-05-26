@@ -28,15 +28,33 @@ export default {
         renderer: 'svg'
       },
       option: {
+        color: ['#1890FF'],
+        legend: {
+          show: true,
+          top: 0,
+          right: 40,
+          textStyle: { color: '#666' }
+        },
+        toolbox: {
+          show: true,
+          top: -5,
+          right: 0,
+          feature: {
+            saveAsImage: { show: true, title: '保存为图片' }
+          }
+        },
         tooltip: {
           trigger: 'axis',
-          extraCssText: 'z-index:1'
+          backgroundColor: '#fff',
+          padding: [10, 15],
+          textStyle: { color: '#333' },
+          extraCssText: 'box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); z-index:1'
         },
         grid: {
-          top: '5%',
+          top: '8%',
           left: '2%',
           right: '4%',
-          bottom: '0%',
+          bottom: '2%',
           containLabel: true
         },
         xAxis: [
@@ -44,37 +62,45 @@ export default {
             type: 'category',
             boundaryGap: false,
             data: [],
-            axisTick: {
-              alignWithLabel: true
-            }
+            axisLine: { lineStyle: { color: '#D9D9D9' } },
+            axisLabel: { color: '#666' },
+            axisTick: { alignWithLabel: true, lineStyle: { color: '#D9D9D9' } }
           }
         ],
         yAxis: [
           {
             type: 'value',
-            minInterval: 1
+            minInterval: 1,
+            axisLine: { show: false },
+            axisTick: { show: false },
+            axisLabel: { color: '#666' },
+            splitLine: { lineStyle: { type: 'dashed', color: '#E8E8E8' } }
           }
         ],
         series: [
           {
             name: '回收量',
-            stack: '总量',
             type: 'line',
             data: [],
+            label: {
+              show: true,
+              position: 'top',
+              color: '#666',
+              fontSize: 12
+            },
             smooth: true,
-            areaStyle: {},
+            symbolSize: 6,
+            lineStyle: { width: 3 },
+            areaStyle: {
+              color: new TChart.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(24, 144, 255, 0.4)' },
+                { offset: 1, color: 'rgba(24, 144, 255, 0.05)' }
+              ])
+            },
             itemStyle: {
-              borderRadius: [0, 5, 5, 0],
-              color: new TChart.graphic.LinearGradient(
-                0,
-                0,
-                1,
-                0,
-                ['#3ED572', '#399efd'].map((color, offset) => ({
-                  color,
-                  offset
-                }))
-              )
+              color: '#1890FF',
+              borderWidth: 2,
+              borderColor: '#fff'
             }
           }
         ]

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="提示" :visible.sync="dialogVisible" :before-close="handleClose" width="30%">
+  <el-dialog title="提示" :visible.sync="dialogVisible" :before-close="handleClose" width="30%" append-to-body>
     <p style="text-align: center; color: #a1a1a1">{{ percentage >= 100 ? completeMessage : message }}</p>
     <el-progress :percentage="percentage" />
     <el-link v-if="downloadUrl" :href="downloadUrl" type="primary"> 下载地址 </el-link>

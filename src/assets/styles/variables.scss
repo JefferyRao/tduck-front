@@ -1,0 +1,58 @@
+// ==========================================
+// 🎨 TDuck 现代大厂风格设计系统变量
+// ==========================================
+
+// 1. 核心调色体系 (Colors)
+// --- 品牌主色 (飞书蓝 Lark Blue) ---
+$color-primary: #3370ff !default;
+$color-primary-hover: #5a8fec !default;
+$color-primary-active: #275ccb !default;
+$color-primary-light: #ebf2ff !default;
+
+// --- 辅助功能色 (Functional Colors) ---
+$color-success: #34c759 !default; // 飞书绿
+$color-success-hover: #5ad579 !default;
+$color-success-light: #eafaf0 !default;
+
+$color-warning: #ff9500 !default; // 暖橘
+$color-warning-hover: #ffa826 !default;
+$color-warning-light: #fff5e6 !default;
+
+$color-danger: #ff3b30 !default; // 胭脂红
+$color-danger-hover: #ff5c54 !default;
+$color-danger-light: #ffebeb !default;
+
+$color-info: #8f959e !default; // 中灰
+
+// --- 灰阶与中性色 (Neutral Color Levels) ---
+$text-primary: #1f2329 !default; // 主标题/正文极深灰（符合飞书规范）
+$text-regular: #646a73 !default; // 次要文字/标签深灰
+$text-secondary: #8f959e !default; // 辅助说明/弱化文本
+$text-placeholder: #bbbfc4 !default; // 占位文本
+$text-disabled: #bbbfc4 !default; // 禁用文本
+
+// --- 边框与背景 (Borders & Backgrounds) ---
+$border-color-base: #dee0e3 !default; // 极轻量基础边框色
+$border-color-light: #ebeeef !default; // 浅边框色
+$border-color-lighter: #f2f3f5 !default;
+$border-color-extra-light: #f5f6f7 !default;
+
+$bg-color-base: #fafbfc !default; // 页面底色背景
+$bg-color-container: #ffffff !default; // 容器/卡片背景
+$bg-color-hover: #fafbfc !default; // 列表/表格 Hover 浅灰
+
+// 2. 现代圆角体系 (Border Radius)
+$border-radius-small: 6px !default; // 微型组件（Input, Button, Tag）
+$border-radius-base: 8px !default; // 中型组件
+$border-radius-medium: 10px !default; // 容器卡片 (Card, Panels)
+$border-radius-large: 12px !default; // 弹出层/抽屉 (Dialog, Drawer)
+
+// 3. 空气感轻盈投影 (Soft Shadows)
+$shadow-card: 0 4px 12px 0 rgba(31, 35, 41, 0.04) !default;
+$shadow-card-hover: 0 6px 18px 0 rgba(31, 35, 41, 0.08) !default;
+$shadow-popup: 0 8px 24px 0 rgba(31, 35, 41, 0.08) !default;
+$shadow-popover: 0 4px 16px 0 rgba(31, 35, 41, 0.06) !default;
+
+// 4. 全局动效过渡 (Transitions)
+$transition-base: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) !default;
+$transition-fast: all 0.15s linear !default;

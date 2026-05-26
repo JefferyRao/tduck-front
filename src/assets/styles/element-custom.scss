@@ -1,0 +1,1591 @@
+@import './variables.scss';
+
+// ==========================================
+// 🚀 Element-UI 极简大厂风格深度覆写
+// ==========================================
+
+// ------------------------------------------
+// 1. Button 按钮优化
+// ------------------------------------------
+.el-button {
+  border-radius: $border-radius-small;
+  font-weight: 500;
+  padding: 10px 20px;
+  height: 36px; // medium 默认高度
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition-base;
+  box-sizing: border-box;
+
+  & [class*='el-icon-'] + span {
+    margin-left: 6px;
+  }
+
+  // 尺寸兼容覆盖
+  &.el-button--small {
+    padding: 8px 16px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  &.el-button--mini {
+    padding: 6px 12px;
+    height: 26px;
+    font-size: 12px;
+    border-radius: 4px;
+  }
+
+  // 默认/朴素按钮
+  &.el-button--default {
+    border-color: $border-color-base;
+    color: $text-primary;
+    background-color: $bg-color-container;
+
+    &:hover,
+    &:focus {
+      color: $color-primary;
+      background-color: $color-primary-light;
+      border-color: rgba($color-primary, 0.5);
+    }
+
+    &:active {
+      color: $color-primary-active;
+      background-color: rgba($color-primary, 0.1);
+      border-color: $color-primary-active;
+    }
+  }
+
+  // 主按钮 Primary
+  &.el-button--primary {
+    background-color: $color-primary;
+    border-color: $color-primary;
+    color: #ffffff;
+
+    &:hover,
+    &:focus {
+      background-color: $color-primary-hover;
+      border-color: $color-primary-hover;
+      color: #ffffff;
+    }
+
+    &:active {
+      background-color: $color-primary-active;
+      border-color: $color-primary-active;
+    }
+
+    &.is-plain {
+      color: $color-primary;
+      background-color: $color-primary-light;
+      border-color: rgba($color-primary, 0.4);
+
+      &:hover,
+      &:focus {
+        background-color: $color-primary;
+        border-color: $color-primary;
+        color: #ffffff;
+      }
+    }
+  }
+
+  // 成功按钮 Success
+  &.el-button--success {
+    background-color: $color-success;
+    border-color: $color-success;
+
+    &:hover,
+    &:focus {
+      background-color: $color-success-hover;
+      border-color: $color-success-hover;
+    }
+
+    &.is-plain {
+      color: $color-success;
+      background-color: $color-success-light;
+      border-color: rgba($color-success, 0.4);
+
+      &:hover,
+      &:focus {
+        background-color: $color-success;
+        border-color: $color-success;
+        color: #ffffff;
+      }
+    }
+  }
+
+  // 警告按钮 Warning
+  &.el-button--warning {
+    background-color: $color-warning;
+    border-color: $color-warning;
+
+    &:hover,
+    &:focus {
+      background-color: $color-warning-hover;
+      border-color: $color-warning-hover;
+    }
+
+    &.is-plain {
+      color: $color-warning;
+      background-color: $color-warning-light;
+      border-color: rgba($color-warning, 0.4);
+
+      &:hover,
+      &:focus {
+        background-color: $color-warning;
+        border-color: $color-warning;
+        color: #ffffff;
+      }
+    }
+  }
+
+  // 危险按钮 Danger
+  &.el-button--danger {
+    background-color: $color-danger;
+    border-color: $color-danger;
+
+    &:hover,
+    &:focus {
+      background-color: $color-danger-hover;
+      border-color: $color-danger-hover;
+    }
+
+    &.is-plain {
+      color: $color-danger;
+      background-color: $color-danger-light;
+      border-color: rgba($color-danger, 0.4);
+
+      &:hover,
+      &:focus {
+        background-color: $color-danger;
+        border-color: $color-danger;
+        color: #ffffff;
+      }
+    }
+  }
+
+  // 链接/文本按钮 Text
+  &.el-button--text {
+    color: $color-primary;
+    padding-left: 0;
+    padding-right: 0;
+    background: transparent;
+    border-color: transparent;
+
+    &:hover,
+    &:focus {
+      color: $color-primary-hover;
+    }
+
+    &:active {
+      color: $color-primary-active;
+    }
+  }
+
+  // 迷你按钮尺寸微调
+  &.el-button--mini {
+    padding: 6px 12px;
+    height: 26px;
+    font-size: 12px;
+    border-radius: 4px;
+  }
+}
+
+// ------------------------------------------
+// 2. Input / Textarea 输入框优化
+// ------------------------------------------
+.el-input {
+  position: relative;
+
+  .el-input__inner {
+    border-radius: $border-radius-small;
+    border-color: $border-color-base;
+    color: $text-primary;
+    height: 36px; // medium 默认高度
+    line-height: 36px;
+    padding: 0 16px;
+    background-color: $bg-color-container;
+    transition: $transition-base;
+
+    &::placeholder {
+      color: $text-placeholder;
+    }
+
+    &:hover {
+      border-color: rgba($color-primary, 0.5);
+    }
+
+    &:focus {
+      border-color: $color-primary;
+      outline: none;
+      // 飞书式双层呼吸外发光
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+  }
+
+  // 带有前缀/后缀图标的间距与定位微调
+  .el-input__prefix,
+  .el-input__suffix {
+    color: $text-secondary;
+    transition: $transition-fast;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+  }
+
+  .el-input__prefix {
+    left: 10px;
+  }
+
+  .el-input__suffix {
+    right: 10px;
+  }
+
+  // 修复：带图标时，输入框文字与其重叠、变形的问题
+  &.el-input--prefix {
+    .el-input__inner {
+      padding-left: 34px !important;
+    }
+  }
+
+  &.el-input--suffix {
+    .el-input__inner {
+      padding-right: 34px !important;
+    }
+  }
+
+  // 尺寸兼容覆盖
+  &.el-input--small {
+    .el-input__inner {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 12px;
+    }
+
+    &.el-input--prefix .el-input__inner {
+      padding-left: 30px !important;
+    }
+
+    &.el-input--suffix .el-input__inner {
+      padding-right: 30px !important;
+    }
+
+    .el-input__prefix {
+      left: 8px;
+    }
+    .el-input__suffix {
+      right: 8px;
+    }
+  }
+
+  &.el-input--mini {
+    .el-input__inner {
+      height: 26px;
+      line-height: 26px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    &.el-input--prefix .el-input__inner {
+      padding-left: 26px !important;
+    }
+
+    &.el-input--suffix .el-input__inner {
+      padding-right: 26px !important;
+    }
+
+    .el-input__prefix {
+      left: 6px;
+    }
+    .el-input__suffix {
+      right: 6px;
+    }
+  }
+
+  &.is-disabled .el-input__inner {
+    background-color: $bg-color-base;
+    border-color: $border-color-light;
+    color: $text-disabled;
+  }
+
+  // 复合型输入框 (el-input-group prepend / append) 样式重塑与圆角无缝融合
+  &.el-input-group {
+    display: inline-flex;
+    width: 100%;
+    align-items: stretch;
+    border-collapse: separate;
+
+    .el-input-group__prepend,
+    .el-input-group__append {
+      background-color: #f5f7fa;
+      color: $text-secondary;
+      border: 1px solid $border-color-base;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: $transition-base;
+      box-sizing: border-box;
+      flex-shrink: 0;
+
+      .el-button,
+      .el-select {
+        margin: -10px -12px;
+        background-color: transparent;
+        border-color: transparent;
+      }
+    }
+
+    .el-input-group__prepend {
+      border-right: none;
+      border-top-left-radius: $border-radius-small !important;
+      border-bottom-left-radius: $border-radius-small !important;
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+
+    .el-input-group__append {
+      border-left: none;
+      border-top-right-radius: $border-radius-small !important;
+      border-bottom-right-radius: $border-radius-small !important;
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+
+    .el-input__inner {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+      // 解决呼吸阴影的外层覆盖问题
+      z-index: 1;
+    }
+
+    &.el-input-group--prepend {
+      .el-input__inner {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+
+    &.el-input-group--append {
+      .el-input__inner {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+  }
+}
+
+// 范围日期/时间选择器（daterange / timerange）美化与挤压修复
+.el-range-editor.el-input__inner {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 14px;
+  box-sizing: border-box;
+  height: 36px; // medium 默认高度
+  line-height: 30px;
+  border-radius: $border-radius-small;
+  border: 1px solid $border-color-base;
+  background-color: $bg-color-container;
+  transition: $transition-base;
+
+  .el-range-input {
+    background-color: transparent !important;
+    border: none !important;
+    color: $text-primary;
+    font-size: 13px;
+    height: 100%;
+
+    &::placeholder {
+      color: $text-placeholder;
+    }
+  }
+
+  .el-range-separator {
+    color: $text-secondary;
+    font-size: 12px;
+    padding: 0 8px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .el-range__icon,
+  .el-range__close-icon {
+    color: $text-secondary;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  &:hover {
+    border-color: rgba($color-primary, 0.5);
+  }
+
+  &.is-active {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    outline: none;
+  }
+
+  // 尺寸兼容覆盖
+  &.el-range-editor--small {
+    height: 32px;
+    line-height: 26px;
+    padding: 3px 12px;
+  }
+
+  &.el-range-editor--mini {
+    height: 26px;
+    line-height: 20px;
+    padding: 3px 10px;
+  }
+}
+
+.el-textarea {
+  .el-textarea__inner {
+    border-radius: $border-radius-small;
+    border-color: $border-color-base;
+    color: $text-primary;
+    padding: 8px 12px;
+    background-color: $bg-color-container;
+    font-family: inherit;
+    transition: $transition-base;
+
+    &::placeholder {
+      color: $text-placeholder;
+    }
+
+    &:hover {
+      border-color: rgba($color-primary, 0.5);
+    }
+
+    &:focus {
+      border-color: $color-primary;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+  }
+}
+
+// ------------------------------------------
+// 3. Select / Cascader 下拉与级联选择优化
+// ------------------------------------------
+.el-select,
+.el-cascader {
+  width: 100%;
+
+  .el-input__inner {
+    cursor: pointer;
+  }
+
+  .el-input.is-focus .el-input__inner {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+  }
+}
+
+// 下拉弹窗菜单优化
+.el-select-dropdown,
+.el-cascader__dropdown {
+  border: 1px solid $border-color-base;
+  box-shadow: $shadow-popover !important;
+  border-radius: $border-radius-base;
+  padding: 4px 0;
+
+  .el-select-dropdown__item {
+    color: $text-regular;
+    height: 34px;
+    line-height: 34px;
+    font-size: 13px;
+    padding: 0 16px;
+    border-radius: 4px;
+    margin: 0 4px;
+
+    &.hover,
+    &:hover {
+      background-color: $bg-color-hover;
+      color: $text-primary;
+    }
+
+    &.selected {
+      color: $color-primary;
+      background-color: $color-primary-light;
+      font-weight: 500;
+    }
+  }
+
+  // 滚动条与三角箭头隐藏/精美化
+  .popper__arrow {
+    display: none !important; // 现代极简去除繁琐三角
+  }
+}
+
+// ------------------------------------------
+// 4. Table 表格大厂呼吸感优化
+// ------------------------------------------
+.el-table {
+  color: $text-primary;
+  border-radius: $border-radius-base;
+
+  &::before {
+    display: none; // 去除底部超硬底边
+  }
+
+  // 仅保留淡淡的水平分割线，去除竖线
+  td,
+  th.is-leaf {
+    border-bottom: 1px solid $border-color-lighter;
+  }
+
+  .el-table__header-wrapper,
+  .el-table__fixed-header-wrapper {
+    th {
+      background-color: $bg-color-base !important;
+      color: $text-regular;
+      font-weight: 600;
+      height: 42px;
+      padding: 8px 0;
+      font-size: 13px;
+      border-bottom: 1px solid $border-color-base;
+    }
+  }
+
+  .el-table__body-wrapper {
+    td {
+      height: 48px; // 适当拉高，极富呼吸感
+      padding: 10px 0;
+      font-size: 13px;
+    }
+  }
+
+  // 细腻柔和的悬停行背景色
+  &.el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: $bg-color-hover !important;
+  }
+
+  // 无数据空态美化
+  .el-table__empty-text {
+    color: $text-secondary;
+    font-size: 13px;
+  }
+}
+
+// ------------------------------------------
+// 5. Card 极简容器卡片优化
+// ------------------------------------------
+.el-card {
+  border: 1px solid $border-color-base;
+  background-color: $bg-color-container;
+  border-radius: $border-radius-medium;
+  box-shadow: $shadow-card;
+  transition: $transition-base;
+
+  &.is-hover-shadow:hover {
+    box-shadow: $shadow-card-hover;
+    transform: translateY(-2px); // 微上浮动效
+  }
+
+  .el-card__header {
+    border-bottom: 1px solid $border-color-lighter;
+    padding: 14px 20px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .el-card__body {
+    padding: 20px;
+  }
+}
+
+// ------------------------------------------
+// 6. Dialog / Drawer 浮层空气感优化
+// ------------------------------------------
+.el-dialog {
+  border-radius: $border-radius-large !important;
+  box-shadow: $shadow-popup !important;
+  overflow: hidden;
+
+  .el-dialog__header {
+    padding: 20px 24px 16px;
+    background-color: $bg-color-container;
+    border-bottom: 1px solid $border-color-lighter;
+
+    .el-dialog__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: $text-primary;
+      line-height: 24px;
+    }
+
+    .el-dialog__headerbtn {
+      top: 20px;
+      right: 24px;
+
+      .el-dialog__close {
+        color: $text-secondary;
+        font-size: 18px;
+        transition: $transition-fast;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+
+  .el-dialog__body {
+    padding: 24px;
+    color: $text-regular;
+    font-size: 14px;
+  }
+
+  .el-dialog__footer {
+    padding: 12px 24px 20px;
+    border-top: 1px solid $border-color-lighter;
+    background-color: $bg-color-container;
+    text-align: right;
+
+    .el-button + .el-button {
+      margin-left: 12px;
+    }
+  }
+}
+
+// Drawer 抽屉重构
+.el-drawer {
+  box-shadow: $shadow-popup !important;
+
+  .el-drawer__header {
+    padding: 20px 24px;
+    margin-bottom: 0;
+    border-bottom: 1px solid $border-color-lighter;
+    color: $text-primary;
+    font-weight: 600;
+    font-size: 16px;
+
+    span {
+      outline: none;
+    }
+
+    .el-drawer__close-btn {
+      outline: none;
+      &:hover i {
+        color: $color-primary;
+      }
+    }
+  }
+
+  .el-drawer__body {
+    padding: 24px;
+    background-color: $bg-color-container;
+  }
+}
+
+// ------------------------------------------
+// 7. Tabs 标签页美化
+// ------------------------------------------
+.el-tabs {
+  .el-tabs__item {
+    font-size: 14px;
+    color: $text-regular;
+    font-weight: 400;
+    transition: $transition-fast;
+
+    &:hover {
+      color: $color-primary-hover;
+    }
+
+    &.is-active {
+      color: $color-primary;
+      font-weight: 600;
+    }
+  }
+
+  .el-tabs__active-bar {
+    background-color: $color-primary;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  .el-tabs__nav-wrap::after {
+    background-color: $border-color-lighter;
+    height: 1px;
+  }
+}
+
+// ------------------------------------------
+// 8. Pagination 分页组件美化
+// ------------------------------------------
+.el-pagination {
+  color: $text-regular;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  // 统一页码按钮与控制按钮
+  button,
+  .el-pager li {
+    background-color: $bg-color-container !important;
+    border: 1px solid $border-color-base;
+    border-radius: $border-radius-small;
+    min-width: 32px;
+    height: 32px;
+    line-height: 30px;
+    margin: 0 4px;
+    font-weight: 500;
+    font-size: 13px;
+    color: $text-regular;
+    transition: $transition-base;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: $color-primary;
+      border-color: rgba($color-primary, 0.6);
+      background-color: rgba($color-primary, 0.02) !important;
+    }
+
+    &:disabled {
+      color: $text-disabled !important;
+      border-color: $border-color-lighter;
+      background-color: $bg-color-base !important;
+      cursor: not-allowed;
+    }
+  }
+
+  .el-pager li {
+    &.active {
+      color: #ffffff !important;
+      background-color: $color-primary !important;
+      border-color: $color-primary;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba($color-primary, 0.3);
+
+      &:hover {
+        color: #ffffff !important;
+        background-color: $color-primary !important;
+      }
+    }
+
+    // 省略号图标样式
+    &.btn-quicknext,
+    &.btn-quickprev {
+      color: $text-secondary;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
+  // 下拉尺寸选择器美化
+  .el-pagination__sizes {
+    margin-right: 12px;
+
+    .el-select .el-input {
+      margin: 0;
+      width: 110px;
+
+      .el-input__inner {
+        border-radius: $border-radius-small;
+        height: 32px;
+        line-height: 32px;
+        padding-left: 8px;
+        padding-right: 24px;
+      }
+    }
+  }
+
+  .el-pagination__total {
+    margin-right: 12px;
+    font-size: 13px;
+    color: $text-secondary;
+  }
+
+  .el-pagination__jump {
+    margin-left: 12px;
+    font-size: 13px;
+    color: $text-secondary;
+    display: inline-flex;
+    align-items: center;
+
+    .el-pagination__editor {
+      margin: 0 6px;
+      height: 32px;
+
+      .el-input__inner {
+        height: 32px;
+        line-height: 32px;
+        border-radius: $border-radius-small;
+        width: 48px;
+        padding: 0 4px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+// ------------------------------------------
+// 9. Dropdown 下拉菜单美化
+// ------------------------------------------
+.el-dropdown-menu {
+  border: 1px solid $border-color-base;
+  box-shadow: $shadow-popover !important;
+  border-radius: $border-radius-base;
+  padding: 6px 0;
+
+  .el-dropdown-menu__item {
+    color: $text-regular;
+    font-size: 13px;
+    line-height: 32px;
+    padding: 0 16px;
+
+    &:focus,
+    &:not(.is-disabled):hover {
+      background-color: $bg-color-hover;
+      color: $text-primary;
+    }
+  }
+}
+
+// ------------------------------------------
+// 10. Message & Message Box 全局提示美化
+// ------------------------------------------
+.el-message {
+  box-shadow: $shadow-popup !important;
+  border: 1px solid $border-color-base !important;
+  border-radius: $border-radius-base !important;
+  background-color: $bg-color-container !important;
+  padding: 12px 20px !important;
+
+  .el-message__content {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &.el-message--success {
+    border-color: rgba($color-success, 0.2) !important;
+    .el-message__content {
+      color: $color-success;
+    }
+    .el-message__icon {
+      color: $color-success;
+    }
+  }
+
+  &.el-message--warning {
+    border-color: rgba($color-warning, 0.2) !important;
+    .el-message__content {
+      color: $color-warning;
+    }
+    .el-message__icon {
+      color: $color-warning;
+    }
+  }
+
+  &.el-message--error {
+    border-color: rgba($color-danger, 0.2) !important;
+    .el-message__content {
+      color: $color-danger;
+    }
+    .el-message__icon {
+      color: $color-danger;
+    }
+  }
+
+  &.el-message--info {
+    border-color: $border-color-base !important;
+    .el-message__content {
+      color: $text-primary;
+    }
+    .el-message__icon {
+      color: $color-info;
+    }
+  }
+}
+
+.el-message-box {
+  border-radius: $border-radius-large !important;
+  box-shadow: $shadow-popup !important;
+  border: none !important;
+  padding: 10px 10px 0 10px;
+
+  .el-message-box__header {
+    padding: 16px 20px;
+    .el-message-box__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  .el-message-box__content {
+    padding: 12px 20px;
+    color: $text-regular;
+    font-size: 14px;
+  }
+
+  .el-message-box__btns {
+    padding: 16px 20px;
+    .el-button + .el-button {
+      margin-left: 12px;
+    }
+  }
+}
+
+// ------------------------------------------
+// 11. Radio 单选框重构
+// ------------------------------------------
+.el-radio {
+  margin-right: 24px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+
+  .el-radio__input {
+    line-height: 1;
+
+    .el-radio__inner {
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid $border-color-base;
+      background-color: $bg-color-container;
+      transition: $transition-base;
+      box-sizing: border-box;
+
+      &::after {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+      }
+    }
+
+    &.is-checked {
+      .el-radio__inner {
+        border-color: $color-primary;
+        background-color: $color-primary;
+
+        &::after {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+    }
+
+    &.is-disabled {
+      .el-radio__inner {
+        border-color: $border-color-lighter;
+        background-color: $bg-color-base;
+
+        &::after {
+          background-color: $text-disabled;
+        }
+      }
+
+      & + .el-radio__label {
+        color: $text-disabled;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .el-radio__label {
+    font-size: 13px;
+    color: $text-regular;
+    padding-left: 8px;
+    line-height: 1;
+    transition: $transition-fast;
+  }
+
+  &.is-checked .el-radio__label {
+    color: $text-primary;
+  }
+
+  &:hover:not(.is-disabled) {
+    .el-radio__inner {
+      border-color: rgba($color-primary, 0.6);
+    }
+  }
+}
+
+// iOS 极简分段控制器质感 Radio Button
+.el-radio-button {
+  .el-radio-button__inner {
+    border: 1px solid $border-color-base;
+    border-left: 0;
+    background-color: $bg-color-container;
+    color: $text-regular;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 36px; // medium 默认高度
+    line-height: 16px;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    transition: $transition-base;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  &:first-child {
+    .el-radio-button__inner {
+      border-left: 1px solid $border-color-base;
+      border-radius: $border-radius-small 0 0 $border-radius-small;
+    }
+  }
+
+  &:last-child {
+    .el-radio-button__inner {
+      border-radius: 0 $border-radius-small $border-radius-small 0;
+    }
+  }
+
+  &.is-active {
+    .el-radio-button__inner {
+      background-color: $color-primary-light !important;
+      border-color: rgba($color-primary, 0.4) !important;
+      color: $color-primary !important;
+      box-shadow: none !important;
+      font-weight: 600;
+
+      &:hover {
+        color: $color-primary !important;
+      }
+    }
+
+    & + .el-radio-button {
+      .el-radio-button__inner {
+        border-left: 1px solid rgba($color-primary, 0.4);
+      }
+    }
+  }
+
+  // 尺寸兼容覆盖
+  &.el-radio-button--small {
+    .el-radio-button__inner {
+      padding: 8px 16px;
+      font-size: 13px;
+      height: 32px;
+      line-height: 14px;
+    }
+  }
+
+  &.el-radio-button--mini {
+    .el-radio-button__inner {
+      padding: 6px 12px;
+      font-size: 12px;
+      height: 26px;
+      line-height: 12px;
+    }
+  }
+}
+
+// ------------------------------------------
+// 12. Switch 开关重构
+// ------------------------------------------
+.el-switch {
+  height: 20px;
+  line-height: 20px;
+  display: inline-flex;
+  align-items: center;
+
+  .el-switch__core {
+    height: 20px;
+    width: 40px !important; // 强制统一大小以确保美观
+    border-radius: 10px;
+    border: 1.5px solid $border-color-base;
+    background-color: rgba($text-placeholder, 0.25);
+    transition: $transition-base;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      top: 1px;
+      left: 1px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+      transition: $transition-base;
+    }
+  }
+
+  &.is-checked {
+    .el-switch__core {
+      background-color: $color-primary !important;
+      border-color: $color-primary !important;
+
+      &::after {
+        left: 100%;
+        margin-left: -16px; // 精准贴合右边缘
+      }
+    }
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .el-switch__core {
+      cursor: not-allowed;
+    }
+  }
+
+  .el-switch__label {
+    font-size: 13px;
+    color: $text-regular;
+
+    &.is-active {
+      color: $text-primary;
+      font-weight: 500;
+    }
+  }
+}
+
+// ------------------------------------------
+// 13. Checkbox 多选框重构
+// ------------------------------------------
+.el-checkbox {
+  margin-right: 24px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+
+  .el-checkbox__input {
+    line-height: 1;
+
+    .el-checkbox__inner {
+      border-radius: 4px;
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid $border-color-base;
+      background-color: $bg-color-container;
+      transition: $transition-base;
+      box-sizing: border-box;
+
+      &::after {
+        box-sizing: content-box;
+        content: '';
+        border: 2.5px solid #ffffff;
+        border-left: 0;
+        border-top: 0;
+        height: 6.5px;
+        left: 3.5px;
+        position: absolute;
+        top: 0.5px;
+        width: 3px;
+        transform: rotate(45deg) scaleY(0);
+        transform-origin: center;
+        transition: transform 0.15s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+      }
+    }
+
+    &.is-checked {
+      .el-checkbox__inner {
+        border-color: $color-primary;
+        background-color: $color-primary;
+
+        &::after {
+          transform: rotate(45deg) scaleY(1);
+        }
+      }
+    }
+
+    &.is-indeterminate {
+      .el-checkbox__inner {
+        border-color: $color-primary;
+        background-color: $color-primary;
+
+        &::after {
+          content: '';
+          position: absolute;
+          background-color: #ffffff;
+          transform: scaleY(1) translate(-50%, -50%);
+          height: 2px;
+          width: 8px;
+          top: 50%;
+          left: 50%;
+          border: none;
+        }
+      }
+    }
+
+    &.is-disabled {
+      .el-checkbox__inner {
+        border-color: $border-color-lighter;
+        background-color: $bg-color-base;
+
+        &::after {
+          border-color: $text-disabled;
+        }
+      }
+
+      & + .el-checkbox__label {
+        color: $text-disabled;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .el-checkbox__label {
+    font-size: 13px;
+    color: $text-regular;
+    padding-left: 8px;
+    line-height: 1;
+    transition: $transition-fast;
+  }
+
+  &.is-checked .el-checkbox__label {
+    color: $text-primary;
+  }
+
+  &:hover:not(.is-disabled) {
+    .el-checkbox__inner {
+      border-color: rgba($color-primary, 0.6);
+    }
+  }
+}
+
+// ------------------------------------------
+// 14. InputNumber 计数器重构
+// ------------------------------------------
+.el-input-number {
+  height: 36px; // medium 默认高度
+  line-height: 34px;
+  width: 130px;
+  position: relative;
+  display: inline-block;
+
+  .el-input {
+    display: block;
+
+    .el-input__inner {
+      padding-left: 40px;
+      padding-right: 40px;
+      text-align: center;
+      height: 36px;
+      line-height: 36px;
+    }
+  }
+
+  // 扁平咬合式加减按钮
+  .el-input-number__decrease,
+  .el-input-number__increase {
+    position: absolute;
+    z-index: 1;
+    top: 1px;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    background-color: $bg-color-base;
+    color: $text-regular;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: $transition-fast;
+    border: none;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.05);
+    }
+
+    &.is-disabled {
+      color: $text-disabled;
+      background-color: $bg-color-base;
+      cursor: not-allowed;
+    }
+  }
+
+  .el-input-number__decrease {
+    left: 1px;
+    border-radius: $border-radius-small 0 0 $border-radius-small;
+    border-right: 1px solid $border-color-base;
+  }
+
+  .el-input-number__increase {
+    right: 1px;
+    border-radius: 0 $border-radius-small $border-radius-small 0;
+    border-left: 1px solid $border-color-base;
+  }
+
+  // 聚焦时边框发光
+  &.is-disabled {
+    .el-input-number__decrease,
+    .el-input-number__increase {
+      border-color: $border-color-lighter;
+    }
+  }
+
+  &.is-without-controls {
+    .el-input__inner {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+  // 尺寸兼容覆盖
+  &.el-input-number--small {
+    height: 32px;
+    line-height: 30px;
+    width: 120px;
+
+    .el-input__inner {
+      padding-left: 36px;
+      padding-right: 36px;
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .el-input-number__decrease,
+    .el-input-number__increase {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+
+  &.el-input-number--mini {
+    height: 26px;
+    line-height: 24px;
+    width: 90px;
+
+    .el-input__inner {
+      padding-left: 30px;
+      padding-right: 30px;
+      height: 26px;
+      line-height: 26px;
+      font-size: 12px;
+    }
+
+    .el-input-number__decrease,
+    .el-input-number__increase {
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+}
+
+// ------------------------------------------
+// 15. Tag 标签大厂色彩重塑
+// ------------------------------------------
+.el-tag {
+  height: 24px;
+  line-height: 22px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition-fast;
+
+  .el-tag__close {
+    color: inherit;
+    font-size: 12px;
+    right: -2px;
+    opacity: 0.7;
+    transition: $transition-fast;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      color: inherit;
+      opacity: 1;
+    }
+  }
+
+  // 默认标签 - Lark蓝
+  &.el-tag--light {
+    background-color: $color-primary-light;
+    border-color: rgba($color-primary, 0.15);
+    color: $color-primary;
+  }
+
+  // 成功状态 - Lark绿
+  &.el-tag--success {
+    background-color: $color-success-light;
+    border-color: rgba($color-success, 0.15);
+    color: $color-success;
+  }
+
+  // 警告状态 - 暖橘
+  &.el-tag--warning {
+    background-color: $color-warning-light;
+    border-color: rgba($color-warning, 0.15);
+    color: $color-warning;
+  }
+
+  // 危险状态 - 胭脂红
+  &.el-tag--danger {
+    background-color: $color-danger-light;
+    border-color: rgba($color-danger, 0.15);
+    color: $color-danger;
+  }
+
+  // 辅助状态 - 中灰
+  &.el-tag--info {
+    background-color: $border-color-extra-light;
+    border-color: $border-color-base;
+    color: $text-regular;
+  }
+}
+
+// ------------------------------------------
+// 16. Pagination 分页样式重塑
+// ------------------------------------------
+.el-pagination.is-background {
+  .el-pager li:not(.disabled) {
+    background-color: #ffffff;
+    color: #646a73;
+    border-radius: 6px;
+    font-weight: 500;
+    border: 1px solid #e8e8e8;
+    transition: all 0.25s ease;
+
+    &:hover {
+      color: $color-primary;
+      border-color: $color-primary;
+    }
+
+    &.active {
+      background-color: $color-primary;
+      color: #ffffff;
+      border-color: $color-primary;
+      box-shadow: 0 4px 10px rgba($color-primary, 0.15);
+    }
+  }
+
+  .btn-next,
+  .btn-prev {
+    background-color: #ffffff;
+    color: #646a73;
+    border-radius: 6px;
+    border: 1px solid #e8e8e8;
+    transition: all 0.25s ease;
+
+    &:hover {
+      color: $color-primary;
+      border-color: $color-primary;
+    }
+  }
+}
+
+// ------------------------------------------
+// 17. Slider 滑块大厂风精致定制
+// ------------------------------------------
+.el-slider {
+  .el-slider__runway {
+    height: 6px;
+    background-color: rgba(31, 35, 41, 0.08); // 比默认灰色更柔和透亮
+    border-radius: 3px;
+    margin: 16px 0;
+
+    &.is-disabled {
+      background-color: $border-color-lighter;
+
+      .el-slider__bar {
+        background-color: $border-color-base;
+      }
+
+      .el-slider__button {
+        border-color: $border-color-base;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .el-slider__bar {
+    height: 6px;
+    background-color: $color-primary; // 飞书蓝
+    border-radius: 3px;
+  }
+
+  .el-slider__button-wrapper {
+    top: -5px; // 重新对齐 (按钮是 16px，轨道是 6px，所以 (16 - 6) / 2 = 5px 偏移)
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    .el-slider__button {
+      width: 16px;
+      height: 16px;
+      border: 2px solid $color-primary;
+      background-color: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(31, 35, 41, 0.18); // 精致柔和阴影
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      cursor: grab;
+
+      &:hover,
+      &:focus,
+      &.dragging {
+        transform: scale(1.15);
+        border-color: $color-primary;
+        box-shadow: 0 0 0 4px rgba($color-primary, 0.2), 0 2px 6px rgba(31, 35, 41, 0.18);
+      }
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  // 刻度停顿点美化
+  .el-slider__stop {
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    top: 0; // 完美居中
+  }
+
+  // 输入框配合尺寸微调
+  .el-slider__input {
+    margin-top: -5px;
+
+    .el-input__inner {
+      border-radius: $border-radius-small;
+    }
+  }
+
+  .el-slider__marks-text {
+    font-size: 12px;
+    color: $text-secondary;
+    margin-top: 8px;
+  }
+}

@@ -1,3 +1,4 @@
+@import './variables.scss';
 /**
 * 通用css样式布局处理
 */
@@ -53,13 +54,13 @@
 }
 
 .desc-text {
-  color: rgba(155, 155, 155, 100);
+  color: $text-secondary;
   font-size: 14px;
   text-align: left;
 }
 
 .title-text {
-  color: #303133;
+  color: $text-primary;
   font-size: 18px;
   text-align: left;
 }
@@ -114,19 +115,16 @@ h6 {
   color: inherit;
 }
 
-//.el-dialog:not(.is-fullscreen) {
-//  margin-top: 6vh !important;
-//}
-
 .el-table {
   .el-table__header-wrapper,
   .el-table__fixed-header-wrapper {
     th {
       word-break: break-word;
-      background-color: #f8f8f9;
-      color: #515a6e;
-      height: 40px;
+      background-color: $bg-color-base;
+      color: $text-regular;
+      height: 42px;
       font-size: 13px;
+      font-weight: 600;
     }
   }
 
@@ -334,7 +332,8 @@ h6 {
   left: 50%;
   -webkit-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
-  border-radius: 10px;
+  border-radius: $border-radius-large;
+  box-shadow: $shadow-popup;
   max-height: calc(100% - 100px);
   max-width: calc(100% - 100px);
 }
@@ -346,13 +345,13 @@ h6 {
 .t-dialog .el-dialog__header {
   padding: 19px 24px;
   min-height: 20px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid $border-color-lighter;
 }
 
 .t-dialog .el-dialog__title,
 .t-dialog .el-drawer__header {
-  color: rgba(0, 0, 0, 0.85);
-  font-weight: 500;
+  color: $text-primary;
+  font-weight: 600;
   word-wrap: break-word;
 }
 
@@ -370,10 +369,10 @@ h6 {
 
 .t-dialog__footer {
   display: block;
-  padding: 10px 16px;
+  padding: 12px 20px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid $border-color-lighter;
   background-color: #fff;
   text-align: right;
 }
@@ -400,17 +399,21 @@ h6 {
 }
 
 .t__dialog__menu {
-  padding-right: 20px;
+  position: absolute;
+  right: 56px;
+  top: 20px;
 }
 
 .t__dialog__menu i {
   color: #909399;
-  font-size: 15px;
-  //padding-bottom: 7px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .t__dialog__menu i:hover {
   color: #409eff;
+  transform: scale(1.15);
 }
 
 .t__dialog__menu .el-dialog__body {
