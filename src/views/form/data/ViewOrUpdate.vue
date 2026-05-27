@@ -120,7 +120,7 @@ export default {
       fullscreen: false,
       openReply: false,
       isPrint: false,
-      dialogHeight: 700
+      dialogHeight: 800
     }
   },
   watch: {
@@ -233,7 +233,7 @@ export default {
 <style lang="scss">
 .dialog-form {
   overflow: hidden;
-  height: 563px;
+  height: 680px;
 
   .left {
     overflow: auto;
@@ -269,6 +269,6 @@ export default {
 }
 
 .view-dialog {
-  height: 500px;
+  min-height: 750px;
 }
 </style>
