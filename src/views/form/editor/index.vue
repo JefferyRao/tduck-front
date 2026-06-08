@@ -1,23 +1,61 @@
 <template>
-  <FormDesign :question-mode="true" />
+  <div class="form-editor-wrapper">
+    <FormDesign :question-mode="true" ref="formDesign" />
+    <ImportFormItem
+      ref="importItems"
+      :form-key="formKey"
+      @success="handleImportSuccess"
+    />
+  </div>
 </template>
+
 <script>
 import TduckForm, { FormDesign } from 'tduck-form-generator'
 import 'tduck-form-generator/dist/TduckForm.css'
 import mixin from '../TduckFormMixin.js'
+import ImportFormItem from './ImportFormItem.vue'
 
 export default {
   name: 'FormEditor',
   components: {
-    FormDesign
+    FormDesign,
+    ImportFormItem
   },
   mixins: [mixin],
   data() {
-    return {}
+    return {
+      formKey: ''
+    }
   },
-  computed: {},
-  methods: {}
+  created() {
+    this.formKey = this.$route.query.key || ''
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.overrideImportButton()
+    })
+  },
+  methods: {
+    overrideImportButton() {
+      const importBtn = document.querySelector('.import-topic-box button')
+      if (importBtn) {
+        importBtn.addEventListener('click', (e) => {
+          e.stopPropagation()
+          this.$refs.importItems.showDialog()
+        }, true)
+      }
+    },
+    handleImportSuccess() {
+      if (this.$refs.formDesign && this.$refs.formDesign.queryProjectItems) {
+        this.$refs.formDesign.queryProjectItems()
+      }
+    }
+  }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.form-editor-wrapper {
+  height: 100%;
+}
+</style>
