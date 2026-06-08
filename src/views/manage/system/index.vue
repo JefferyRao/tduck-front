@@ -161,7 +161,7 @@
             </el-form>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="AI 配置" name="deepSeekEnvConfig">
+        <el-tab-pane label="AI 设置" name="deepSeekEnvConfig">
           <deep-seek-config v-if="activeName === 'deepSeekEnvConfig'" />
         </el-tab-pane>
       </el-tabs>
