@@ -129,7 +129,7 @@
 
 <script>
 import { getToken } from '@/utils/auth'
-import { parseDocument, aiOptimizeRequest } from '@/api/project/import'
+import { aiOptimizeRequest } from '@/api/project/import'
 import { batchCreateProjectItem } from '@/api/project/form'
 
 export default {
