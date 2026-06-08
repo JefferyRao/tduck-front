@@ -46,9 +46,14 @@ export default {
       }
     },
     handleImportSuccess() {
+      // Try to refresh FormDesign component
       if (this.$refs.formDesign && this.$refs.formDesign.queryProjectItems) {
         this.$refs.formDesign.queryProjectItems()
       }
+      // Fallback: reload page after short delay to ensure data is visible
+      setTimeout(() => {
+        this.$router.go(0)
+      }, 500)
     }
   }
 }
