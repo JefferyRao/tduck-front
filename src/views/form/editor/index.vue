@@ -1,6 +1,6 @@
 <template>
   <div class="form-editor-wrapper">
-    <FormDesign :question-mode="true" ref="formDesign" />
+    <FormDesign :question-mode="true" ref="formDesign" @back="handleBack" />
     <ImportFormItem
       ref="importItems"
       :form-key="formKey"
@@ -48,6 +48,9 @@ export default {
     handleImportSuccess() {
       // Reload page to show imported items
       window.location.reload()
+    },
+    handleBack() {
+      this.$router.push('/home')
     }
   }
 }
