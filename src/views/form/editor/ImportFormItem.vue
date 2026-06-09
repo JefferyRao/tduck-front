@@ -291,23 +291,42 @@ export default {
 
       this.importing = true
 
-      const items = this.previewFields.map((f, i) => ({
-        type: f.type,
-        formItemId: f.type.toLowerCase() + '-' + Date.now() + '-' + i,
-        label: f.label,
-        required: f.required,
-        formKey: this.formKey,
-        scheme: {
-          typeId: f.type,
-          config: {
-            formId: f.type.toLowerCase() + '-' + Date.now() + '-' + i,
-            label: f.label,
-            required: f.required,
-            options: f.options.length > 0 ? f.options : undefined
-          },
-          vModel: f.type.toLowerCase() + '-' + Date.now() + '-' + i
+      const items = this.previewFields.map((f, i) => {
+        const id = f.type.toLowerCase() + '-' + Date.now() + '-' + i
+        const config = {
+          formId: id,
+          label: f.label,
+          required: f.required,
+          showLabel: true,
+          span: 24,
+          regList: []
         }
-      }))
+        if (f.options.length > 0) {
+          config.options = f.options
+          config.optionsType = '0'
+        }
+        return {
+          type: f.type,
+          formItemId: id,
+          label: f.label,
+          required: f.required,
+          formKey: this.formKey,
+          displayType: false,
+          hideType: false,
+          placeholder: '',
+          scheme: {
+            typeId: f.type,
+            config: config,
+            vModel: id,
+            formItemId: id,
+            key: id,
+            displayType: false,
+            placeholder: '',
+            regList: [],
+            action: {}
+          }
+        }
+      })
 
       try {
         await batchCreateProjectItem(items)
