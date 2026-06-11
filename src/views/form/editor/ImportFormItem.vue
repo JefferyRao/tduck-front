@@ -58,7 +58,7 @@
               type="textarea"
               :autosize="{ minRows: 20, maxRows: 20 }"
               placeholder="请将准备好的内容按格式粘贴到这里，或上传文档自动解析"
-              @change="handleSplitContent"
+              @input="handleSplitContent"
             />
           </el-col>
           <el-col :span="12">
@@ -138,6 +138,10 @@ export default {
     formKey: {
       type: String,
       default: ''
+    },
+    onSuccess: {
+      type: Function,
+      default: null
     }
   },
   data() {
@@ -151,7 +155,8 @@ export default {
       optimizing: false,
       importing: false,
       statusText: '',
-      statusIcon: ''
+      statusIcon: '',
+      importDebugPrefix: '[导入题目]'
     }
   },
   computed: {
@@ -164,7 +169,14 @@ export default {
   },
   methods: {
     showDialog() {
-      this.dialogVisible = true
+      // 恢复上次保存的内容（如 AI 优化后的结果）
+      const savedContent = localStorage.getItem('tduck_import_content_' + this.formKey);
+      if (savedContent) {
+        this.content = savedContent;
+        this.handleSplitContent();
+        console.log(`${this.importDebugPrefix} 恢复已保存的内容 (${savedContent.length} 字符)`);
+      }
+      this.dialogVisible = true;
     },
 
     handleSplitContent() {
@@ -249,11 +261,14 @@ export default {
     },
 
     async handleAiOptimize() {
+      const log = (...args) => console.log(this.importDebugPrefix, '[AI]', ...args);
+
       if (!this.content.trim()) {
         this.$message.warning('请先输入或上传问卷内容')
         return
       }
 
+      log(`开始AI优化: content长度=${this.content.length}, formKey=${this.formKey}`);
       this.optimizing = true
       this.statusText = 'AI 正在优化问卷...'
       this.statusIcon = 'el-icon-loading'
@@ -262,19 +277,27 @@ export default {
         const res = await aiOptimizeRequest({
           content: this.content,
           formKey: this.formKey
-        })
+        });
+        log('AI API 返回:', res);
         if (res.code === 200 && res.data) {
-          this.content = res.data
-          this.handleSplitContent()
+          log(`AI优化成功: 新内容长度=${res.data.length}, 旧内容长度=${this.content.length}`);
+          this.content = res.data;
+          // 立即保存 AI 优化结果到 localStorage
+          localStorage.setItem('tduck_import_content_' + this.formKey, res.data);
+          log('已保存AI优化结果到 localStorage');
+          this.handleSplitContent();
+          log(`解析结果: previewFields 共 ${this.previewFields.length} 个题目`);
           this.statusText = 'AI 优化完成'
           this.statusIcon = 'el-icon-success'
           this.$message.success('问卷优化完成')
         } else {
+          log('AI优化失败:', res);
           this.statusText = '优化失败: ' + (res.msg || '未知错误')
           this.statusIcon = 'el-icon-error'
           this.$message.error(res.msg || 'AI 优化失败')
         }
       } catch (e) {
+        log('AI优化异常:', e);
         this.statusText = '优化失败'
         this.statusIcon = 'el-icon-error'
         this.$message.error('AI 服务响应异常，请稍后重试')
@@ -284,10 +307,20 @@ export default {
     },
 
     async handleImport() {
+      const log = (...args) => console.log(this.importDebugPrefix, ...args);
+
+      // 确保从 textarea 最新内容重新解析（防止 @input 事件未触发）
+      this.handleSplitContent();
+
       if (!this.previewFields.length) {
-        this.$message.warning('请先输入或上传问卷内容')
+        log('⚠️ previewFields 为空，中止导入');
+        log('当前 textarea 内容:', this.content.substring(0, 200));
+        this.$message.warning('请先输入或上传问卷内容，格式：题型。题目标题')
         return
       }
+
+      log(`开始导入: formKey=${this.formKey}, 题目数=${this.previewFields.length}`);
+      log('previewFields:', JSON.parse(JSON.stringify(this.previewFields)));
 
       this.importing = true
 
@@ -328,13 +361,41 @@ export default {
         }
       })
 
+      log('构建的 items:', JSON.parse(JSON.stringify(items)));
+
       try {
-        await batchCreateProjectItem(items)
+        log('调用 batchCreateProjectItem API...');
+        const apiResult = await batchCreateProjectItem(items);
+        log('API 返回:', apiResult);
+
+        // 检查 API 返回结果
+        if (apiResult && apiResult.code !== 200) {
+          log('❌ API 返回非200:', apiResult);
+          this.$message.error(apiResult.msg || '导入失败，服务器返回错误');
+          return;
+        }
+
+        // 保存当前内容到 localStorage（AI 优化后的结果不丢失）
+        if (this.content.trim()) {
+          localStorage.setItem('tduck_import_content_' + this.formKey, this.content);
+          log('已保存内容到 localStorage');
+        }
+
         this.$message.success('导入成功')
-        this.$emit('success')
+        log('调用 onSuccess 回调 → 父组件将重建 FormDesign');
+        if (this.onSuccess) {
+          this.onSuccess();
+        } else {
+          // 兜底：如果没有传回调，尝试 emit
+          this.$emit('success');
+        }
         this.dialogVisible = false
       } catch (e) {
-        this.$message.error('导入失败，请重试')
+        log('❌ 导入失败:', e);
+        log('错误详情:', e.message, e.stack);
+        // 显示更具体的错误信息
+        const errorMsg = e.response?.data?.msg || e.message || '未知错误';
+        this.$message.error('导入失败：' + errorMsg)
       } finally {
         this.importing = false
       }
